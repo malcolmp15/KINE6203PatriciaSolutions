@@ -44,9 +44,7 @@ ver
 % 5. What command would return a list of all of the available functions in 
 % the image processing toolbox? 
 
-%???
-matlab.addons.toolbox.installedToolboxes;
-
+web https://www.mathworks.com/help/images/referencelist.html
 
 % 6. On the line below figure, write a command to draw a graph of 
 % x and y. 
@@ -66,7 +64,7 @@ figure
 %
 % Answer: Paired t-test. The function used is ttest(). This function can
 % also be used for a one-sample t-test. To designate it to be used for a
-% paired-sample t-test, you need to input two data values as seen below:
+% paired-sample t-test, you need to input two data sets as seen below:
 %
 % ttest(x,y) % Tests null hypothesis that x and y have a mean of 0, are
 % normally distributed, and the variance is unknown.
@@ -80,8 +78,8 @@ figure
 
 %
 % Answer: The 2 major types of loops that MATLAB supports are "for" and
-% "while" loops. The major difference between the two if that the "for"
-% statements will run for a defined number of times while the "while" loop
+% "while" loops. The major difference between the two is that the "for"
+% loops will run for a defined number of times while the "while" loop
 % will continue to run for as long as the specified condition remains true.
 % 
 % "For" loop Matlab page:   https://www.mathworks.com/help/matlab/ref/for.html
@@ -119,7 +117,8 @@ xpbombs  % Command for playing minesweeper
 % variable. Add one to the value of the variable. 
 
 myage = 23;
-myage - 2 + 1
+myage = myage - 2;
+myage = myage + 1;
 
 % 13. Use the built-in function namelengthmax to find out the maximum number of
 % characters that you can have in an identifier name under your version of
@@ -130,13 +129,13 @@ myMaxNameLength = namelengthmax;
 % 14. Create two variables to store a weight in pounds and ounces. Use who and whos
 % to see the variables. Clear one of them and then use who and whos again.
 
-weight_pounds = 3; 
-weight_ounces = 3;
+weightPounds = 3; 
+weightOunces = 3;
 
 who         % Displays variables used in this script
 whos        % Displays the names, sizes, bytes, class, and attributes of each variable used in this script
 
-clear weight_pounds
+clear weightPounds
 
 who         % Displays variables used in this script
 whos        % Displays the names, sizes, bytes, class, and attributes of each variable used in this script
@@ -145,8 +144,8 @@ whos        % Displays the names, sizes, bytes, class, and attributes of each va
 % variable to the type int32 and store the result in a new variable (hint: this is known
 % as casting in computer programming).
 
-double_variable = 100.1;
-int32_variable = int32(double_variable);
+doubleVariable = 100.1;
+int32Variable = int32(doubleVariable);
 
 % 16. Create a variable called pounds to store a weight in pounds. Convert this to 
 % kilograms and assign the result to a variable kilos.
@@ -167,7 +166,6 @@ cTemp = (fTemp-32) * 5/9;    % Degrees in Celsius
 % Store your results with variable names vecA, vecB and vecC respectively.
 
 
-
 vecA = [2:7];                    % Row vector going from 2 to 7 in increments of 1
 vecB = [1.1000:0.2000:1.7000];   % Row vector going from 1.1000 to 1.7000 in increments of 0.2000
 vecC = [8:-2:2];                 % Row vector going from 8 to 2 in increments of -2
@@ -182,8 +180,8 @@ vec = linspace(0,2*pi,50);   % Creating a vector from 0 to 2pi spanning 50 eleme
 % 21. Using the colon operator and the transpose operator, 
 % create a column vector that has the values -1 to 1 in steps of 0.5.
 
-row_vector = [-1:0.5:1];        % Row vector from -1 to 1 in increments of 0.5
-column_vector = row_vector.';    % Transposing row vector to become a column vector
+rowVector = [-1:0.5:1];        % Row vector from -1 to 1 in increments of 0.5
+columnVector = rowVector.';    % Transposing row vector to become a column vector
 
 % 22. Create a variable called rows that is a random integer in the inclusive range 
 % from 1 to 5. Create a variable called cols that is a random integer in the 
@@ -203,11 +201,11 @@ result = zeros(rows,cols);
 % - find the maximum.
 
 
-random_integer_vector = [randi([-10,10],1), randi([-10,10],1), randi([-10,10],1), randi([-10,10],1), randi([-10,10],1)];
-random_integer_vector_minus_3 = random_integer_vector - 3;
-random_integer_vector_minus_3_positive = length(find(random_integer_vector_minus_3>0));
-random_integer_vector_minus_3_absolute_value = abs(random_integer_vector_minus_3);
-random_integer_vector_minus_3_maximum = max(random_integer_vector_minus_3);
+randomIntegerVector = [randi([-10,10],1), randi([-10,10],1), randi([-10,10],1), randi([-10,10],1), randi([-10,10],1)];
+randomIntegerVectorMinus3 = randomIntegerVector - 3;
+randomIntegerVectorMinus3Positive = length(find(randomIntegerVectorMinus3>0));
+randomIntegerVectorMinus3AbsoluteValue = abs(randomIntegerVectorMinus3);
+randomIntegerVectorMinus3Maximum = max(randomIntegerVectorMinus3AbsoluteValue);
 
 
 % 24. Write some code that will calculate the area of a trapezoid. Create
@@ -259,8 +257,8 @@ unitVector = ([x,y,z])/sqrt( (x^2) + (y^2) + (z^2) );  % Calculating and Saving 
 
 
  prompt = 'Please type in Hello World   ' % This prompts the user to input text
- user_input = input(prompt, 's');         % This takes what the user input and does not treat it as an expression
- user_input                               % This prints whatever the user input in response to the prompt
+ userInput = input(prompt, 's');          % This takes what the user input and does not treat it as an expression
+ userInput                                % This prints whatever the user input in response to the prompt
 
 
 %%%%% When you have completed everything, type the following two commands
