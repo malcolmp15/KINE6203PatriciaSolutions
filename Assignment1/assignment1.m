@@ -144,8 +144,8 @@ whos        % Displays the names, sizes, bytes, class, and attributes of each va
 % variable to the type int32 and store the result in a new variable (hint: this is known
 % as casting in computer programming).
 
-doubleVariable = 100.1;
-int32Variable = int32(doubleVariable);
+doubleVariable = 100.1;                 % Number as a Double Variable
+int32Variable = int32(doubleVariable);  % Number as int32
 
 % 16. Create a variable called pounds to store a weight in pounds. Convert this to 
 % kilograms and assign the result to a variable kilos.
