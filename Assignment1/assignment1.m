@@ -181,7 +181,7 @@ vec = linspace(0,2*pi,50);   % Creating a vector from 0 to 2pi spanning 50 eleme
 % create a column vector that has the values -1 to 1 in steps of 0.5.
 
 rowVector = [-1:0.5:1];        % Row vector from -1 to 1 in increments of 0.5
-columnVector = rowVector.';    % Transposing row vector to become a column vector
+columnVector = rowVector';    % Transposing row vector to become a column vector
 
 % 22. Create a variable called rows that is a random integer in the inclusive range 
 % from 1 to 5. Create a variable called cols that is a random integer in the 
@@ -242,7 +242,9 @@ x = input('Problem 25: Please input a value for x to solve for the unit vector  
 y = input('Problem 25: Please input a value for y to solve for the unit vector  ')   % Prompts user to define value of y
 z = input('Problem 25: Please input a value for z to solve for the unit vector  ')   % Prompts user to define value of z
 
-unitVector = ([x,y,z])/sqrt( (x^2) + (y^2) + (z^2) );  % Calculating and Saving the unitVector for the x,y,and z values
+unitVector = ([x,y,z])/(sqrt( (x^2) + (y^2) + (z^2) ));  % Calculating and Saving the unitVector for the x,y,and z values
+% Note: type "format long" in Command Window if trying to verify magnitude is 1
+                                                
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%  Part 2: Hello World %%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -256,8 +258,8 @@ unitVector = ([x,y,z])/sqrt( (x^2) + (y^2) + (z^2) );  % Calculating and Saving 
 %%% Enter the code for your program below this line
 
 
- prompt = 'Please type in Hello World   ' % This prompts the user to input text
- userInput = input(prompt, 's');          % This takes what the user input and does not treat it as an expression
+ output = 'Please type in Hello World   ' % This prompts the user to input text
+ userInput = input(output, 's');          % This takes what the user input and does not treat it as an expression
  userInput                                % This prints whatever the user input in response to the prompt
 
 
