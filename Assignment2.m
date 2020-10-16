@@ -15,2205 +15,1334 @@ clc                 % Clears the command window
 clear all           % Clears saved variables and values in workspace
 close all           % Closes any open figures
 
-%% Welcome Message
+replayAnswer = '?'; % Variable that indicates whether a player would like to replay
+replayPrompt = 0;   % Variable used to ensure a player will input a valid answer when asked if they would like to replay
+
+%% Asking User if they would like to play
 % This section is welcoming the user and inquiring if they would like to
 % play a game
 
 % Numerical indicator for identifying if a player wishes to play Tic-Tac-Toe
-i = 0;                        % 1 means user wants to play 
-                              % 2 means user does not want to play
+i = 0;                        % 1 means user wants to play
+% 2 means user does not want to play
 
+% While player has not chosen whether they wanted to play or not
 while i == 0
     
-promptPlay = 'Would you like to play Tic-Tac-Toe? (Y/N)  ' % Asking user if they want to play
-userInput = input(promptPlay,'s')                          % User response
-
-if userInput == 'Y'           % If User indicates that they would like to play
-    i = 1                           
-    promptResponse = 'Great! Lets get started!  '          % Response to user wanting to play
-
-elseif userInput == 'N'       % If User indicates that they would not like to play
-    i =2
-    promptResponse = 'Get outta here!'                     % Response to user not wanting to play
-    pause(.75)                                             % Brief pause
-    quit                      % Closing Application
+    promptPlay = 'Would you like to play Tic-Tac-Toe? (Y/N)  ' % Asking user if they want to play
+    userInput = input(promptPlay,'s')                          % User response
     
-else 
-    promptResponse = 'Please reply with Y or N  '          % If user inputs invalid answer
-    i = 0;
-    pause(1.5)                                             % Pause so reader can read promptResponse
+    if userInput == 'Y'           % If User indicates that they would like to play
+        i = 1
+        promptResponse = 'Great! Lets get started!  '          % Response to user wanting to play
+        
+    elseif userInput == 'N'       % If User indicates that they would not like to play
+        i =2
+        promptResponse = 'Get outta here!'                     % Response to user not wanting to play
+        pause(.75)                                             % Brief pause
+        quit                      % Closing Application
+        
+    else                          % If user input an invalid answer
+        promptResponse = 'Please reply with Y or N  '          % Reminding user how to properly respond to the prompt
+        i = 0;
+        pause(1.5)                                             % Pause so reader can read promptResponse
     end
 end
 
 pause(1.5)                                                 % Brief Pause
-clc                                                        % Clears Command Window 
+clc                                                        % Clear command window
 
-%% Establishing Turn Order
-% This section is asking the user if they would prefer to go first or
-% second
+%% The Game
 
-% Number indicating if the user is going to go first or second
-% k will begin at 0 so the user can decide if they want to go first or second
-k = 0;              
-
-% Asking user if they would like to go first or second 
-userInputOrder = 'Would you prefer to go first or second? Please input 1 or 2   '  % Message to user
-playerOrder = input(userInputOrder);        % Prompting user response
-
-% Establishing the different scenarios in response to user's answer to prompt
-while k == 0                                % While user has not selected turn order
-if playerOrder == 1                         % If user chooses to go first
-    userInputOrderResponse = 'You would like to go first? Alright, lets get started!   '
-    k = 1;                                  % Ending loop; user goes first
+while replayAnswer ~= 'N'       % While user has not said they would not like to replay
     
-elseif playerOrder == 2                     % If user chooses to go second
-    userInputOrderResponse = 'You would like to go second? They do say first is the worst and second is the best!  '
-    k = 2;                                  % Ending loop; user goes second
+    clear all                   % Clear all saved variables and values in Workspace
+    close all                   % Close any open figures
+    clc                         % Clear command window
     
-else                                        % If user does not input valid answer
-    userInputOrderResponse = 'Someone was not reading very carefully. I am going to give you another chance, please do not let me down!   '
-    pause(1.5)                              % Pause
-    userInputOrder = 'Would you prefer to go first or second? Please input 1 or 2   '
+    % !!!!!!!!!!!!!!!!!!!!! %
+    % Generating Game Board %
+    % !!!!!!!!!!!!!!!!!!!!! %
     
-% Giving user another chance to input valid answer
-
-    playerOrder = input(userInputOrder);    % Prompting user to input if they would prefer to go first or second
-    
-    if playerOrder == 1                     % If user chooses to go first
-        userInputOrderResponse = 'You would like to go first? Alright, lets get started!   '
-        k=1;                                % Ending loop; user goes first
-        
-    elseif playerOrder == 2                 % If user chooses to go second
-        userInputOrderResponse = 'You would like to go second? They do say first is the worst and second is the best!  '
-        k=2;                                % Ending loop; user goes second
-        
-    else                                    % If user does not input valid answer again
-        'Okay, I give up, you are just going to go first. '
-        k = 1;                              % Ending loop; user goes first
-        
-    end
-end
-end
-
-pause(1.5)                                  % Brief Pause
-clc                                         % Clearing Command Window
-
-%% Generating Game Board
-% This section creates the game board and defines the slots of the
-% Tic-Tac-Toe board
-
-figure                      % Creating a figure
-hold on                     % Allowing multiple lines to be plot
-title('Tic-Tac-Toe');       % Creating a title for the figure
-
-xlim([0 12]);               % Adjusting x-axis to span 0 to 12
-ylim([0 12]);               % Adjusting y-axis to span 0 to 12
-
-xline(4);                   % Creating a vertical line at x = 4
-xline(8);                   % Creating a vertical line at x = 8
-yline(4);                   % Creating a horizontal line at y = 4
-yline(8);                   % Creating a horizontal line at y = 8
-
-% Creating labels for the 9 slots on the Tic-Tac-Toe board %
-
-slotLabel1 = '1';
-slotLabel2 = '2';
-slotLabel3 = '3';
-slotLabel4 = '4';
-slotLabel5 = '5';
-slotLabel6 = '6';
-slotLabel7 = '7';
-slotLabel8 = '8';
-slotLabel9 = '9';
-
-% Assigning numerical indicators for slots to determine if they have been
-% filled or not
-
-slot1 = 0;
-slot2 = 0;
-slot3 = 0;
-slot4 = 0;
-slot5 = 0;
-slot6 = 0;
-slot7 = 0;
-slot8 = 0;
-slot9 = 0;
-
-% Adding text labels to each slot on the Tic-Tac-Toe board %
-
-slotLabel1Text = text(1.5,10,slotLabel1,'FontSize', 60, 'Color', 'r');
-slotLabel2Text = text(1.5,6,slotLabel2,'FontSize', 60, 'Color', 'r');
-slotLabel3Text = text(1.5,2,slotLabel3,'FontSize', 60, 'Color', 'r');
-slotLabel4Text = text(5.5,10,slotLabel4,'FontSize', 60, 'Color', 'r');
-slotLabel5Text = text(5.5,6,slotLabel5,'FontSize', 60, 'Color', 'r');
-slotLabel6Text = text(5.5,2,slotLabel6,'FontSize', 60, 'Color', 'r');
-slotLabel7Text = text(9.5,10,slotLabel7,'FontSize', 60, 'Color', 'r');
-slotLabel8Text = text(9.5,6,slotLabel8,'FontSize', 60, 'Color', 'r');
-slotLabel9Text = text(9.5,2,slotLabel9,'FontSize', 60, 'Color', 'r');
-
-pause(1)        % Pause for 1 second
-
-%% Defining Variables
-% This section defines variables that are used throughout the script
-
-% Defining Variables to determine who wins
-
-% User Score Variables %
-userScoreColumn1 = 0;       % Column 1 doesn't have user markers
-userScoreColumn2 = 0;       % Column 2 doesn't have user markers
-userScoreColumn3 = 0;       % Column 3 doesn't have user markers
-userScoreRow1 = 0;          % Row 1 doesn't have user markers
-userScoreRow2 = 0;          % Row 2 doesn't have user markers
-userScoreRow3 = 0;          % Row 3 doesn't have user markers
-userScoreDiagFromLeft = 0;  % Diagnoal Starting from the left doesn't have user markers
-userScoreDiagFromRight = 0; % Diagnoal Starting from the right doesn't have user markers
-
-% Computer Score Variables %
-compScoreColumn1 = 0;       % Column 1 doesn't have computer markers
-compScoreColumn2 = 0;       % Column 2 doesn't have computer markers
-compScoreColumn3 = 0;       % Column 3 doesn't have computer markers
-compScoreRow1 = 0;          % Row 1 doesn't have computer markers
-compScoreRow2 = 0;          % Row 2 doesn't have computer markers
-compScoreRow3 = 0;          % Row 3 doesn't have computer markers
-compScoreDiagFromLeft = 0;  % Diagnoal Starting from the left doesn't have computer markers
-compScoreDiagFromRight = 0; % Diagnoal Starting from the right doesn't have computer markers
-
-% Numerical indicator for determining if someone has won
-winnerResultIndicator = 0;  
-
-% Defined message for prompting rematch
-promptRematchWinner = 'Congratulations winner! Would you like to play again? Y/N     ';
-promptRematchLoser = 'Hey, don''t give up! Would you like to play again? Y/N     ';
-promptRematchDraw = 'Well that could have ended better! Would you like to play again? Y/N     ';
-askRematch = 0;     % Variable used to reset board if user wishes to replay
-%% User Goes First %%
-% This section codes the scenario if the user decided to go first
-
-if k==1  % k is an indication of player turn number
-         % 1 means player is going first
-    
-n=1;     % Counter indicating what turn number it is 
-         % In this scenario, odd numbers are the user's turn
-         % and even numbers are the computer's turn
-
- 
-for t = (n:10)          % Limiting the game to 9 rounds
-
-   if askRematch == 'Y' % If user has already played and wants to play again
-       
-    figure                      % Creating the figure where the game board will be generated
+    figure                      % Creating a figure
     hold on                     % Allowing multiple lines to be plot
     title('Tic-Tac-Toe');       % Creating a title for the figure
+    
     xlim([0 12]);               % Adjusting x-axis to span 0 to 12
     ylim([0 12]);               % Adjusting y-axis to span 0 to 12
-   
-% Creating lines for the Game Board %
+    
     xline(4);                   % Creating a vertical line at x = 4
     xline(8);                   % Creating a vertical line at x = 8
     yline(4);                   % Creating a horizontal line at y = 4
     yline(8);                   % Creating a horizontal line at y = 8
-
-% Redefining slot numerical indicators so the slots are known to be empty
-
-    slot1 = 0;
-    slot2 = 0;
-    slot3 = 0;
-    slot4 = 0;
-    slot5 = 0;
-    slot6 = 0;
-    slot7 = 0;
-    slot8 = 0;
-    slot9 = 0;
-
-% Readding text labels to each slot on the Tic-Tac-Toe board %
-
-    slotLabel1Text = text(1.5,10,slotLabel1,'FontSize', 60, 'Color', 'r');
-    slotLabel2Text = text(1.5,6,slotLabel2,'FontSize', 60, 'Color', 'r');
-    slotLabel3Text = text(1.5,2,slotLabel3,'FontSize', 60, 'Color', 'r');
-    slotLabel4Text = text(5.5,10,slotLabel4,'FontSize', 60, 'Color', 'r');
-    slotLabel5Text = text(5.5,6,slotLabel5,'FontSize', 60, 'Color', 'r');
-    slotLabel6Text = text(5.5,2,slotLabel6,'FontSize', 60, 'Color', 'r');
-    slotLabel7Text = text(9.5,10,slotLabel7,'FontSize', 60, 'Color', 'r');
-    slotLabel8Text = text(9.5,6,slotLabel8,'FontSize', 60, 'Color', 'r');
-    slotLabel9Text = text(9.5,2,slotLabel9,'FontSize', 60, 'Color', 'r');
-
-    pause(1)        % Pause for 1 second
-
-    % Defining Variables to determine who wins
-
-    % User Score Variables %
-    userScoreColumn1 = 0;       % Column 1 doesn't have user markers
-    userScoreColumn2 = 0;       % Column 2 doesn't have user markers
-    userScoreColumn3 = 0;       % Column 3 doesn't have user markers
-    userScoreRow1 = 0;          % Row 1 doesn't have user markers
-    userScoreRow2 = 0;          % Row 2 doesn't have user markers
-    userScoreRow3 = 0;          % Row 3 doesn't have user markers
-    userScoreDiagFromLeft = 0;  % Diagnoal Starting from the left doesn't have user markers
-    userScoreDiagFromRight = 0; % Diagnoal Starting from the right doesn't have user markers
-
-    % Computer Score Variables %
-    compScoreColumn1 = 0;       % Column 1 doesn't have computer markers
-    compScoreColumn2 = 0;       % Column 2 doesn't have computer markers
-    compScoreColumn3 = 0;       % Column 3 doesn't have computer markers
-    compScoreRow1 = 0;          % Row 1 doesn't have computer markers
-    compScoreRow2 = 0;          % Row 2 doesn't have computer markers
-    compScoreRow3 = 0;          % Row 3 doesn't have computer markers
-    compScoreDiagFromLeft = 0;  % Diagnoal Starting from the left doesn't have computer markers
-    compScoreDiagFromRight = 0; % Diagnoal Starting from the right doesn't have computer markers
-
-    % Numerical indicator for determining if someone has won
-    winnerResultIndicator = 0;  
-
-    % Defined message for prompting rematch
-    promptRematchWinner = 'Congratulations winner! Would you like to play again? Y/N     ';
-    promptRematchLoser = 'Hey, don''t give up! Would you like to play again? Y/N     ';
-    promptRematchDraw = 'Well that could have ended better! Would you like to play again? Y/N     ';
-    askRematch = 0;
-       else
-       end
-                %!!! CODE FOR THE USER'S TURN !!!%
+    
+    % Creating labels for the 9 slots on the Tic-Tac-Toe board %
+    spotLabel1 = '1';
+    spotLabel2 = '2';
+    spotLabel3 = '3';
+    spotLabel4 = '4';
+    spotLabel5 = '5';
+    spotLabel6 = '6';
+    spotLabel7 = '7';
+    spotLabel8 = '8';
+    spotLabel9 = '9';
+    
+    % Adding text labels to each spot on the Tic-Tac-Toe board %
+    spotLabel1Text = text(1.5,10,spotLabel1,'FontSize', 60, 'Color', 'r');
+    spotLabel2Text = text(1.5,6,spotLabel2,'FontSize', 60, 'Color', 'r');
+    spotLabel3Text = text(1.5,2,spotLabel3,'FontSize', 60, 'Color', 'r');
+    spotLabel4Text = text(5.5,10,spotLabel4,'FontSize', 60, 'Color', 'r');
+    spotLabel5Text = text(5.5,6,spotLabel5,'FontSize', 60, 'Color', 'r');
+    spotLabel6Text = text(5.5,2,spotLabel6,'FontSize', 60, 'Color', 'r');
+    spotLabel7Text = text(9.5,10,spotLabel7,'FontSize', 60, 'Color', 'r');
+    spotLabel8Text = text(9.5,6,spotLabel8,'FontSize', 60, 'Color', 'r');
+    spotLabel9Text = text(9.5,2,spotLabel9,'FontSize', 60, 'Color', 'r');
+    
+    % Varibales to indicate whether a spot on the board has been filled %
+    spot1 = 0;
+    spot2 = 0;
+    spot3 = 0;
+    spot4 = 0;
+    spot5 = 0;
+    spot6 = 0;
+    spot7 = 0;
+    spot8 = 0;
+    spot9 = 0;
+    
+    % Variables for establishing user score %
+    userRow1 = [0 0 0];
+    userRow2 = [0 0 0];
+    userRow3 = [0 0 0];
+    userColumn1 = [0 0 0]';
+    userColumn2 = [0 0 0]';
+    userColumn3 = [0 0 0]';
+    userDiagFromLeft = [0 0 0];
+    userDiagFromRight = [0 0 0];
+    
+    % Variables for establishing the computer's score %
+    compRow1 = [0 0 0];
+    compRow2 = [0 0 0];
+    compRow3 = [0 0 0];
+    compColumn1 = [0 0 0]';
+    compColumn2 = [0 0 0]';
+    compColumn3 = [0 0 0]';
+    compDiagFromLeft = [compRow1(1) compRow2(2) compRow3(3)];
+    compDiagFromRight = [compRow1(3) compRow2(2) compRow3(1)];
+    
+    % Variables for maintaining the game %
+    turn = 1;           % Variable indicating what turn it is
+    userWins = '?';     % Variable indicating whether the user has won, lost, or tied with the computer
+    replayAnswer = '?'; % Variable that indicates whether a player would like to replay
+    replayPrompt = 0;   % Variable used to ensure a player will input a valid answer when asked if they would like to replay
+    
+    while userWins == '?'   % While the user has not won, lost, or tied
+        for n = (turn:9)    % Limiting the game to 9 rounds
+            
+            while turn == 1 % While it is the first turn
+                turn
+                userInput = input('What spot do you want to pick?   '); % Asking user where they would like to place an X
                 
-
-while n == 1|3|5|7|9    % Ensuring user goes on odd turn numbers        
- 
-disp('Your Turn!')
-    userInput1 = input('What is the number of the box you wish to select?   ');
-    if userInput1 == 1
-        if slot1 == 0
-        delete(slotLabel1Text)
-        plot(2,10,'rX', 'MarkerSize', 60)
-        slot1 = 'Filled';
-        n=n+1;
-        userScoreColumn1 = userScoreColumn1 + 1;
-        userScoreRow1 = userScoreRow1 + 1;
-        userScoreDiagFromLeft = userScoreDiagFromLeft +1;
-        break
-
+                if userWins == '?'                              % If user inputs 1
+                    if userInput == 1                           % If spot 1 is empty
+                        if spot1 == 0                           % Delete the label "1" on board
+                            delete(spotLabel1Text)              % Plot X at 1
+                            plot(2,10,'rX', 'MarkerSize', 60)   % Spot 1 is now full
+                            spot1 = 1;                          % User has marked the first spot in Row 1
+                            userRow1(1) = 1                     % User has marked the first spot in Column 1
+                            userColumn1(1) = 1;                 % User has marked the first spot in Left Diagonal
+                            userDiagFromLeft(1) = 1;            % It is the next turn
+                            turn = turn + 1;
+                        else
+                        end
+                        
+                        
+                    elseif userInput == 2                       % If user inputs 2
+                        if spot2 == 0                           % If spot 2 is empty
+                            delete(spotLabel2Text)              % Delete the label "2" on board
+                            plot(2,6,'rX', 'MarkerSize', 60)    % Plot X at 2
+                            spot2 = 1;                          % Spot 2 is now full
+                            userRow2(1) = 1                     % User has marked the first spot in Row 2
+                            userColumn1(2) = 1;                 % User has marked the second spot in Column 1
+                            turn = turn + 1;                    % It is the next turn
+                        else
+                        end
+                        
+                    elseif userInput == 3                       % If user inputs 3
+                        if spot3 == 0                           % If spot 3 is empty
+                            delete(spotLabel3Text)              % Delete the label "3" on board
+                            plot(2,2,'rX', 'MarkerSize', 60)    % Plot X at 3
+                            spot3 = 1;                          % Spot 3 is now full
+                            userRow3(1) = 1;                    % User has marked the first spot in Row 3
+                            userColumn1(3) = 1;                 % User has marked the third spot in Column 1
+                            userDiagFromRight(1) = 1;           % User has marked the first spot in the Right Diagonal
+                            turn = turn + 1;                    % It is the next turn
+                        else
+                        end
+                        
+                    elseif userInput == 4                       % If user inputs 4
+                        if spot4 == 0                           % If spot 4 is empty
+                            delete(spotLabel4Text)              % Delete the label "4" on board
+                            plot(6,10,'rX', 'MarkerSize', 60)   % Plot X at 4
+                            spot4 = 1;                          % Spot 4 is now full
+                            userRow1(2) = 1                     % User has marked the second spot in Row 1
+                            userColumn2(1) = 1;                 % User has marked the first spot in Column 1
+                            turn = turn + 1;                    % It is the next turn
+                        else
+                        end
+                        
+                    elseif userInput == 5                       % If user inputs 5
+                        if spot5 == 0                           % If spot 5 is empty
+                            delete(spotLabel5Text)              % Delete the label "5" on board
+                            plot(6,6,'rX', 'MarkerSize', 60)    % Plot X at 5
+                            spot5 = 1;                          % Spot 5 is now full
+                            userRow2(2) = 1                     % User has marked the second spot in Row 2
+                            userColumn2(2) = 1;                 % User has marked the second spot in Column 2
+                            userDiagFromLeft(2) = 1;            % User has marked the second spot in the Left Diagonal
+                            userDiagFromRight(2) = 1;           % User has marked the second spot in the Right Diagonal
+                            turn = turn + 1;                    % It is the next turn
+                        else
+                        end
+                        
+                    elseif userInput == 6                       % If user inputs 6
+                        if spot6 == 0                           % If spot 6 is empty
+                            delete(spotLabel6Text)              % Delete the label "6" on board
+                            plot(6,2,'rX', 'MarkerSize', 60)    % Plot X at 6
+                            spot6 = 1;                          % Spot 6 is now full
+                            userRow3(2) = 1;                    % User has marked the second spot in Row 3
+                            userColumn2(3) = 1;                 % User has marked the third spot in Column 2
+                            turn = turn + 1;                    % It is the next turn
+                        else
+                        end
+                        
+                    elseif userInput == 7                       % If user inputs 7
+                        if spot7 == 0                           % If spot 7 is empty
+                            delete(spotLabel7Text)              % Delete the label "7" on board
+                            plot(10,10,'rX', 'MarkerSize', 60)  % Plot X at 7
+                            spot7 = 1;                          % Spot 7 is now full
+                            userRow1(3) = 1                     % User has marked the thrid spot in Row 3
+                            userColumn3(1) = 1;                 % User has marked the first spot in Column 3
+                            userDiagFromRight(3) = 1;           % User has marked the third spot in the Right Diagonal
+                            turn = turn + 1;                    % It is the next turn
+                        else
+                        end
+                        
+                    elseif userInput == 8                       % If user inputs 8
+                        if spot8 == 0                           % If spot 8 is empty
+                            delete(spotLabel8Text)              % Delete the label "8" on board
+                            plot(10,6,'rX', 'MarkerSize', 60)   % Plot X at 8
+                            spot8 = 1;                          % Spot 8 is now full
+                            userRow2(3) = 1                     % User has marked the third spot in Row 2
+                            userColumn3(2) = 1;                 % User has marked the second spot in Column 3
+                            turn = turn + 1;                    % It is the next turn
+                        else
+                        end
+                        
+                    elseif userInput == 9                       % If user inputs 9
+                        if spot9 == 0                           % If spot 9 is empty
+                            delete(spotLabel9Text)              % Delete the label "9" on board
+                            plot(10,2,'rX', 'MarkerSize', 60)   % Plot X at 9
+                            spot9 = 1;                          % Spot 9 is now full
+                            userRow3(3) = 1;                    % User has marked the third spot in Row 3
+                            userColumn3(3) = 1;                 % User has marked the thrid spot in Column 3
+                            userDiagFromLeft(3) = 1;            % User has marked the third spot in the Right Diagonal
+                            turn = turn + 1;                    % It is the next turn
+                        else
+                        end
+                        
+                    else userInput = input('Please pick a spot that has not been taken   ');
+                    end
+                else
+                    break
+                end
+                
+            end
+            
+            
+            while turn ==2
+                if userWins == '?'
+                    compInput = randi([1,9],1)
+                    
+                     if compInput == 1 && spot1 == 0         % If computer inputs 1 and spot 1 is empty
+                        delete(spotLabel1Text)              % Delete label "1" from board
+                        plot(2,10,'bo', 'MarkerSize', 60)   % Plot O at 1
+                        spot1 = 1;                          % Spot 1 is now full
+                        compRow1(1) = 1;                    % Computer has marked the first spot in Row 1
+                        compColumn1(1) = 1;                 % Computer has marked the first spot in Column 1
+                        compDiagFromLeft(1) = 1;            % Computer has marked the first spot in the Left Diagonal
+                        turn = turn + 1;                    % It is now the next turn
+                        
+                        
+                    elseif compInput == 2 && spot2 == 0     % If computer inputs 2 and spot 2 is empty
+                        delete(spotLabel2Text)              % Delete label "2" from board
+                        plot(2,6,'bo', 'MarkerSize', 60)    % Plot O at 2
+                        spot2 = 1;                          % Spot 2 is now full
+                        compRow2(1) = 1;                    % Computer has marked the first spot in Row 2
+                        compColumn1(2) = 1;                 % Computer has marked the second spot in Column 2
+                        turn = turn + 1;                    % It is now the next turn
+                        
+                   elseif compInput == 3 && spot3 == 0     % If computer inputs 3 and spot 3 is empty
+                        delete(spotLabel3Text)              % Delete label "3" from board
+                        plot(2,2,'bo', 'MarkerSize', 60)    % Plot O at 3
+                        spot3 = 1;                          % Spot 3 is now full
+                        compRow3(1) = 1;                    % Computer has marked the first spot in Row 3
+                        compColumn1(3) = 1;                 % Computer has marked the third spot in Column 3
+                        compDiagFromRight(1) = 1;           % Computer has marked the first spot in the Right Diagonal
+                        turn = turn + 1;                    % It is now the next turn
+                            
+                    elseif compInput == 4 && spot4 ==0      % If the computer inputs 4 and spot 4 is empty
+                        delete(spotLabel4Text)              % Delete label "4" from board
+                        plot(6,10,'bo', 'MarkerSize', 60)   % Plot O at 4
+                        spot4 = 1;                          % Spot 4 is now full
+                        compRow1(2) = 1;                    % Computer has marked the second spot in Row 1
+                        compColumn2(1) = 1;                 % Computer has marked the first spot in Column 1
+                        turn = turn + 1;                    % It is now the next turn
+                        
+                    elseif compInput == 5 && spot5 == 0     % If the computer inputs 5 and spot 5 is empty
+                        delete(spotLabel5Text)              % Delete label "5" from board
+                        plot(6,6,'bo', 'MarkerSize', 60)    % Plot O at 5
+                        spot5 = 1;                          % Spot 5 is now full
+                        compRow2(2) = 1;                    % Computer has marked the second spot in Row 2
+                        compColumn2(2) = 1;                 % Computer has marked the second spot in Column 2
+                        compDiagFromLeft(2) = 1;            % Computer has marked the second spot in the Left Diagonal
+                        compDiagFromRight(2) = 1;           % Computer has marked the second spot in the Right Diagonal
+                        turn = turn + 1;                    % It is now the next turn
+                        
+                    elseif compInput == 6 && spot6 == 0     % If the computer inputs 6 and spot 6 is empty
+                        delete(spotLabel6Text)              % Delete label "6" from board
+                        plot(6,2,'bo', 'MarkerSize', 60)    % Plot O at 6
+                        spot6 = 1;                          % Spot 6 is now full
+                        compRow3(2) = 1;                    % Computer has marked the second spot in Row 3
+                        compColumn2(3) = 1;                 % Computer has marked the third spot in Column 2
+                        turn = turn + 1;                    % It is now the next turn
+                        
+                    elseif compInput == 7 && spot7 == 0     % If the computer inputs 7 and spot 7 is empty
+                        delete(spotLabel7Text)              % Delete label "7" from board
+                        plot(10,10,'bo', 'MarkerSize', 60)  % Plot O at 7
+                        spot7 = 1;                          % Spot 7 is now full
+                        compRow1(3) = 1;                    % Computer has marked the third spot in Row 1
+                        compColumn3(1) = 1;                 % Computer has marked the first spot in Column 3
+                        compDiagFromRight(3) = 1;           % Computer has marked the third spot in the Right Diagonal
+                        turn = turn + 1;                    % It is now the next turn
+                        
+                   elseif compInput == 8 && spot8 == 0     % If the computer inputs 8 and spot 8 is empty
+                        delete(spotLabel8Text)              % Delete label "8" from board
+                        plot(10,6,'bo', 'MarkerSize', 60)   % Plot O at 8
+                        spot8 = 1;                          % Spot 8 is now full
+                        compRow2(3) = 1;                    % Computer has marked the third spot in Row 2
+                        compColumn3(2) = 1;                 % Computer has marked the second spot in Column 3
+                        turn = turn + 1;                    % It is now the next turn
+                        
+                    elseif compInput == 9 && spot9 == 0     % If the computer inputs 9 and spot 9 is empty
+                        delete(spotLabel9Text)              % Delete label "9" from board
+                        plot(10,2,'bo', 'MarkerSize', 60)   % Plot O at 9
+                        spot9 = 1;                          % Spot 9 is now full
+                        compRow3(3) = 1;                    % Computer has marked the third spot in Row 3
+                        compColumn3(3) = 1;                 % Computer has marked the third spot in Column 3
+                        compDiagFromLeft(3) = 1;            % Computer has marked the third spot in the Left Diagonal
+                        turn = turn + 1;                    % It is now the next turn
+                        
+                    else
+                     end
+                     else break
+            end
+                          end
+            
+            while turn == 3
+                if userWins == '?'
+                    turn
+                    userInput = input('What spot do you want to pick?   ');
+                    
+                    
+                    if userInput == 1                           % If user inputs 1
+                        if spot1 == 0                           % If spot 1 is empty
+                            delete(spotLabel1Text)              % Delete the label "1" on board
+                            plot(2,10,'rX', 'MarkerSize', 60)   % Plot X at 1
+                            spot1 = 1;                          % Spot 1 is now full
+                            userRow1(1) = 1                     % User has marked the first spot in Row 1
+                            userColumn1(1) = 1;                 % User has marked the first spot in Column 1
+                            userDiagFromLeft(1) = 1;            % User has marked the first spot in Left Diagonal
+                            turn = turn + 1;                    % It is the next turn
+                        else
+                        end
+                        
+                        
+                    elseif userInput == 2                       % If user inputs 2
+                        if spot2 == 0                           % If spot 2 is empty
+                            delete(spotLabel2Text)              % Delete the label "2" on board
+                            plot(2,6,'rX', 'MarkerSize', 60)    % Plot X at 2
+                            spot2 = 1;                          % Spot 2 is now full
+                            userRow2(1) = 1                     % User has marked the first spot in Row 2
+                            userColumn1(2) = 1;                 % User has marked the second spot in Column 1
+                            turn = turn + 1;                    % It is the next turn
+                        else
+                        end
+                        
+                    elseif userInput == 3                       % If user inputs 3
+                        if spot3 == 0                           % If spot 3 is empty
+                            delete(spotLabel3Text)              % Delete the label "3" on board
+                            plot(2,2,'rX', 'MarkerSize', 60)    % Plot X at 3
+                            spot3 = 1;                          % Spot 3 is now full
+                            userRow3(1) = 1;                    % User has marked the first spot in Row 3
+                            userColumn1(3) = 1;                 % User has marked the third spot in Column 1
+                            userDiagFromRight(1) = 1;           % User has marked the first spot in the Right Diagonal
+                            turn = turn + 1;                    % It is the next turn
+                        else
+                        end
+                        
+                    elseif userInput == 4                       % If user inputs 4
+                        if spot4 == 0                           % If spot 4 is empty
+                            delete(spotLabel4Text)              % Delete the label "4" on board
+                            plot(6,10,'rX', 'MarkerSize', 60)   % Plot X at 4
+                            spot4 = 1;                          % Spot 4 is now full
+                            userRow1(2) = 1                     % User has marked the second spot in Row 1
+                            userColumn2(1) = 1;                 % User has marked the first spot in Column 1
+                            turn = turn + 1;                    % It is the next turn
+                        else
+                        end
+                        
+                    elseif userInput == 5                       % If user inputs 5
+                        if spot5 == 0                           % If spot 5 is empty
+                            delete(spotLabel5Text)              % Delete the label "5" on board
+                            plot(6,6,'rX', 'MarkerSize', 60)    % Plot X at 5
+                            spot5 = 1;                          % Spot 5 is now full
+                            userRow2(2) = 1                     % User has marked the second spot in Row 2
+                            userColumn2(2) = 1;                 % User has marked the second spot in Column 2
+                            userDiagFromLeft(2) = 1;            % User has marked the second spot in the Left Diagonal
+                            userDiagFromRight(2) = 1;           % User has marked the second spot in the Right Diagonal
+                            turn = turn + 1;                    % It is the next turn
+                        else
+                        end
+                        
+                    elseif userInput == 6                       % If user inputs 6
+                        if spot6 == 0                           % If spot 6 is empty
+                            delete(spotLabel6Text)              % Delete the label "6" on board
+                            plot(6,2,'rX', 'MarkerSize', 60)    % Plot X at 6
+                            spot6 = 1;                          % Spot 6 is now full
+                            userRow3(2) = 1;                    % User has marked the second spot in Row 3
+                            userColumn2(3) = 1;                 % User has marked the third spot in Column 2
+                            turn = turn + 1;                    % It is the next turn
+                        else
+                        end
+                        
+                    elseif userInput == 7                       % If user inputs 7
+                        if spot7 == 0                           % If spot 7 is empty
+                            delete(spotLabel7Text)              % Delete the label "7" on board
+                            plot(10,10,'rX', 'MarkerSize', 60)  % Plot X at 7
+                            spot7 = 1;                          % Spot 7 is now full
+                            userRow1(3) = 1                     % User has marked the thrid spot in Row 3
+                            userColumn3(1) = 1;                 % User has marked the first spot in Column 3
+                            userDiagFromRight(3) = 1;           % User has marked the third spot in the Right Diagonal
+                            turn = turn + 1;                    % It is the next turn
+                        else
+                        end
+                        
+                    elseif userInput == 8                       % If user inputs 8
+                        if spot8 == 0                           % If spot 8 is empty
+                            delete(spotLabel8Text)              % Delete the label "8" on board
+                            plot(10,6,'rX', 'MarkerSize', 60)   % Plot X at 8
+                            spot8 = 1;                          % Spot 8 is now full
+                            userRow2(3) = 1                     % User has marked the third spot in Row 2
+                            userColumn3(2) = 1;                 % User has marked the second spot in Column 3
+                            turn = turn + 1;                    % It is the next turn
+                        else
+                        end
+                        
+                    elseif userInput == 9                       % If user inputs 9
+                        if spot9 == 0                           % If spot 9 is empty
+                            delete(spotLabel9Text)              % Delete the label "9" on board
+                            plot(10,2,'rX', 'MarkerSize', 60)   % Plot X at 9
+                            spot9 = 1;                          % Spot 9 is now full
+                            userRow3(3) = 1;                    % User has marked the third spot in Row 3
+                            userColumn3(3) = 1;                 % User has marked the thrid spot in Column 3
+                            userDiagFromLeft(3) = 1;            % User has marked the third spot in the Right Diagonal
+                            turn = turn + 1;                    % It is the next turn
+                        else
+                        end
+                        
+                    else userInput = input('Please pick a spot that has not been taken   ');
+                    end
+                else break
+                end
+                
+            end
+            
+            while turn == 4
+                if userWins == '?'
+                    
+                    compInput = randi([1,9],1)
+                    
+                    if compInput == 1 && spot1 == 0         % If computer inputs 1 and spot 1 is empty
+                        delete(spotLabel1Text)              % Delete label "1" from board
+                        plot(2,10,'bo', 'MarkerSize', 60)   % Plot O at 1
+                        spot1 = 1;                          % Spot 1 is now full
+                        compRow1(1) = 1;                    % Computer has marked the first spot in Row 1
+                        compColumn1(1) = 1;                 % Computer has marked the first spot in Column 1
+                        compDiagFromLeft(1) = 1;            % Computer has marked the first spot in the Left Diagonal
+                        turn = turn + 1;                    % It is now the next turn
+                        
+                        
+                   elseif compInput == 2 && spot2 == 0     % If computer inputs 2 and spot 2 is empty
+                        delete(spotLabel2Text)              % Delete label "2" from board
+                        plot(2,6,'bo', 'MarkerSize', 60)    % Plot O at 2
+                        spot2 = 1;                          % Spot 2 is now full
+                        compRow2(1) = 1;                    % Computer has marked the first spot in Row 2
+                        compColumn1(2) = 1;                 % Computer has marked the second spot in Column 2
+                        turn = turn + 1;                    % It is now the next turn
+                        
+                        
+                    elseif compInput == 3 && spot3 == 0     % If computer inputs 3 and spot 3 is empty
+                        delete(spotLabel3Text)              % Delete label "3" from board
+                        plot(2,2,'bo', 'MarkerSize', 60)    % Plot O at 3
+                        spot3 = 1;                          % Spot 3 is now full
+                        compRow3(1) = 1;                    % Computer has marked the first spot in Row 3
+                        compColumn1(3) = 1;                 % Computer has marked the third spot in Column 3
+                        compDiagFromRight(1) = 1;           % Computer has marked the first spot in the Right Diagonal
+                        turn = turn + 1;                    % It is now the next turn
+                            
+                        
+                    elseif compInput == 4 && spot4 ==0      % If the computer inputs 4 and spot 4 is empty
+                        delete(spotLabel4Text)              % Delete label "4" from board
+                        plot(6,10,'bo', 'MarkerSize', 60)   % Plot O at 4
+                        spot4 = 1;                          % Spot 4 is now full
+                        compRow1(2) = 1;                    % Computer has marked the second spot in Row 1
+                        compColumn2(1) = 1;                 % Computer has marked the first spot in Column 1
+                        turn = turn + 1;                    % It is now the next turn
+                        
+                   elseif compInput == 5 && spot5 == 0     % If the computer inputs 5 and spot 5 is empty
+                        delete(spotLabel5Text)              % Delete label "5" from board
+                        plot(6,6,'bo', 'MarkerSize', 60)    % Plot O at 5
+                        spot5 = 1;                          % Spot 5 is now full
+                        compRow2(2) = 1;                    % Computer has marked the second spot in Row 2
+                        compColumn2(2) = 1;                 % Computer has marked the second spot in Column 2
+                        compDiagFromLeft(2) = 1;            % Computer has marked the second spot in the Left Diagonal
+                        compDiagFromRight(2) = 1;           % Computer has marked the second spot in the Right Diagonal
+                        turn = turn + 1;                    % It is now the next turn
+                        
+                   elseif compInput == 6 && spot6 == 0     % If the computer inputs 6 and spot 6 is empty
+                        delete(spotLabel6Text)              % Delete label "6" from board
+                        plot(6,2,'bo', 'MarkerSize', 60)    % Plot O at 6
+                        spot6 = 1;                          % Spot 6 is now full
+                        compRow3(2) = 1;                    % Computer has marked the second spot in Row 3
+                        compColumn2(3) = 1;                 % Computer has marked the third spot in Column 2
+                        turn = turn + 1;                    % It is now the next turn
+                        
+                   elseif compInput == 7 && spot7 == 0     % If the computer inputs 7 and spot 7 is empty
+                        delete(spotLabel7Text)              % Delete label "7" from board
+                        plot(10,10,'bo', 'MarkerSize', 60)  % Plot O at 7
+                        spot7 = 1;                          % Spot 7 is now full
+                        compRow1(3) = 1;                    % Computer has marked the third spot in Row 1
+                        compColumn3(1) = 1;                 % Computer has marked the first spot in Column 3
+                        compDiagFromRight(3) = 1;           % Computer has marked the third spot in the Right Diagonal
+                        turn = turn + 1;                    % It is now the next turn
+                        
+                   elseif compInput == 8 && spot8 == 0     % If the computer inputs 8 and spot 8 is empty
+                        delete(spotLabel8Text)              % Delete label "8" from board
+                        plot(10,6,'bo', 'MarkerSize', 60)   % Plot O at 8
+                        spot8 = 1;                          % Spot 8 is now full
+                        compRow2(3) = 1;                    % Computer has marked the third spot in Row 2
+                        compColumn3(2) = 1;                 % Computer has marked the second spot in Column 3
+                        turn = turn + 1;                    % It is now the next turn
+                        
+                    elseif compInput == 9 && spot9 == 0     % If the computer inputs 9 and spot 9 is empty
+                        delete(spotLabel9Text)              % Delete label "9" from board
+                        plot(10,2,'bo', 'MarkerSize', 60)   % Plot O at 9
+                        spot9 = 1;                          % Spot 9 is now full
+                        compRow3(3) = 1;                    % Computer has marked the third spot in Row 3
+                        compColumn3(3) = 1;                 % Computer has marked the third spot in Column 3
+                        compDiagFromLeft(3) = 1;            % Computer has marked the third spot in the Left Diagonal
+                        turn = turn + 1;                    % It is now the next turn
+                        
+                    else
+                    end
+                else
+                    break
+                end
+            end
+            
+            while turn == 5
+                if userWins == '?'
+                    turn
+                    userInput = input('What spot do you want to pick?   ');
+                    
+                    
+                    if userInput == 1                           % If user inputs 1
+                        if spot1 == 0                           % If spot 1 is empty
+                            delete(spotLabel1Text)              % Delete the label "1" on board
+                            plot(2,10,'rX', 'MarkerSize', 60)   % Plot X at 1
+                            spot1 = 1;                          % Spot 1 is now full
+                            userRow1(1) = 1                     % User has marked the first spot in Row 1
+                            userColumn1(1) = 1;                 % User has marked the first spot in Column 1
+                            userDiagFromLeft(1) = 1;            % User has marked the first spot in Left Diagonal
+                            turn = turn + 1;                    % It is the next turn
+                        else
+                        end
+                        
+                        
+                    elseif userInput == 2                       % If user inputs 2
+                        if spot2 == 0                           % If spot 2 is empty
+                            delete(spotLabel2Text)              % Delete the label "2" on board
+                            plot(2,6,'rX', 'MarkerSize', 60)    % Plot X at 2
+                            spot2 = 1;                          % Spot 2 is now full
+                            userRow2(1) = 1                     % User has marked the first spot in Row 2
+                            userColumn1(2) = 1;                 % User has marked the second spot in Column 1
+                            turn = turn + 1;                    % It is the next turn
+                        else
+                        end
+                        
+                    elseif userInput == 3                       % If user inputs 3
+                        if spot3 == 0                           % If spot 3 is empty
+                            delete(spotLabel3Text)              % Delete the label "3" on board
+                            plot(2,2,'rX', 'MarkerSize', 60)    % Plot X at 3
+                            spot3 = 1;                          % Spot 3 is now full
+                            userRow3(1) = 1;                    % User has marked the first spot in Row 3
+                            userColumn1(3) = 1;                 % User has marked the third spot in Column 1
+                            userDiagFromRight(1) = 1;           % User has marked the first spot in the Right Diagonal
+                            turn = turn + 1;                    % It is the next turn
+                        else
+                        end
+                        
+                    elseif userInput == 4                       % If user inputs 4
+                        if spot4 == 0                           % If spot 4 is empty
+                            delete(spotLabel4Text)              % Delete the label "4" on board
+                            plot(6,10,'rX', 'MarkerSize', 60)   % Plot X at 4
+                            spot4 = 1;                          % Spot 4 is now full
+                            userRow1(2) = 1                     % User has marked the second spot in Row 1
+                            userColumn2(1) = 1;                 % User has marked the first spot in Column 1
+                            turn = turn + 1;                    % It is the next turn
+                        else
+                        end
+                        
+                    elseif userInput == 5                       % If user inputs 5
+                        if spot5 == 0                           % If spot 5 is empty
+                            delete(spotLabel5Text)              % Delete the label "5" on board
+                            plot(6,6,'rX', 'MarkerSize', 60)    % Plot X at 5
+                            spot5 = 1;                          % Spot 5 is now full
+                            userRow2(2) = 1                     % User has marked the second spot in Row 2
+                            userColumn2(2) = 1;                 % User has marked the second spot in Column 2
+                            userDiagFromLeft(2) = 1;            % User has marked the second spot in the Left Diagonal
+                            userDiagFromRight(2) = 1;           % User has marked the second spot in the Right Diagonal
+                            turn = turn + 1;                    % It is the next turn
+                        else
+                        end
+                        
+                    elseif userInput == 6                       % If user inputs 6
+                        if spot6 == 0                           % If spot 6 is empty
+                            delete(spotLabel6Text)              % Delete the label "6" on board
+                            plot(6,2,'rX', 'MarkerSize', 60)    % Plot X at 6
+                            spot6 = 1;                          % Spot 6 is now full
+                            userRow3(2) = 1;                    % User has marked the second spot in Row 3
+                            userColumn2(3) = 1;                 % User has marked the third spot in Column 2
+                            turn = turn + 1;                    % It is the next turn
+                        else
+                        end
+                        
+                    elseif userInput == 7                       % If user inputs 7
+                        if spot7 == 0                           % If spot 7 is empty
+                            delete(spotLabel7Text)              % Delete the label "7" on board
+                            plot(10,10,'rX', 'MarkerSize', 60)  % Plot X at 7
+                            spot7 = 1;                          % Spot 7 is now full
+                            userRow1(3) = 1                     % User has marked the thrid spot in Row 3
+                            userColumn3(1) = 1;                 % User has marked the first spot in Column 3
+                            userDiagFromRight(3) = 1;           % User has marked the third spot in the Right Diagonal
+                            turn = turn + 1;                    % It is the next turn
+                        else
+                        end
+                        
+                    elseif userInput == 8                       % If user inputs 8
+                        if spot8 == 0                           % If spot 8 is empty
+                            delete(spotLabel8Text)              % Delete the label "8" on board
+                            plot(10,6,'rX', 'MarkerSize', 60)   % Plot X at 8
+                            spot8 = 1;                          % Spot 8 is now full
+                            userRow2(3) = 1                     % User has marked the third spot in Row 2
+                            userColumn3(2) = 1;                 % User has marked the second spot in Column 3
+                            turn = turn + 1;                    % It is the next turn
+                        else
+                        end
+                        
+                    elseif userInput == 9                       % If user inputs 9
+                        if spot9 == 0                           % If spot 9 is empty
+                            delete(spotLabel9Text)              % Delete the label "9" on board
+                            plot(10,2,'rX', 'MarkerSize', 60)   % Plot X at 9
+                            spot9 = 1;                          % Spot 9 is now full
+                            userRow3(3) = 1;                    % User has marked the third spot in Row 3
+                            userColumn3(3) = 1;                 % User has marked the thrid spot in Column 3
+                            userDiagFromLeft(3) = 1;            % User has marked the third spot in the Right Diagonal
+                            turn = turn + 1;                    % It is the next turn
+                        else
+                        end
+                        
+                    else userInput = input('Please pick a spot that has not been taken   ');
+                    end
+                else
+                    break
+                end
+                
+            end
+            
+            while turn ==6;
+                
+                if userWins == '?'
+                    if userRow1 == [1 1 1];
+                        break
+                    elseif userRow2 == [1 1 1];
+                        break
+                    elseif userRow3 == [1 1 1];
+                        break
+                    elseif userColumn1 == [1 1 1]'
+                        break
+                    elseif userColumn2 == [1 1 1]'
+                        break
+                    elseif userColumn3 == [1 1 1]'
+                        break
+                    elseif userDiagFromLeft == [1 1 1]
+                        break
+                    elseif userDiagFromRight == [1 1 1]
+                        break
+                    else
+                        
+                    end
+                end
+                
+                %while turn == 6
+                turn
+                if userWins == '?'
+                    compInput = randi([1,9],1)
+                    if compInput == 1 && spot1 == 0         % If computer inputs 1 and spot 1 is empty
+                        delete(spotLabel1Text)              % Delete label "1" from board
+                        plot(2,10,'bo', 'MarkerSize', 60)   % Plot O at 1
+                        spot1 = 1;                          % Spot 1 is now full
+                        compRow1(1) = 1;                    % Computer has marked the first spot in Row 1
+                        compColumn1(1) = 1;                 % Computer has marked the first spot in Column 1
+                        compDiagFromLeft(1) = 1;            % Computer has marked the first spot in the Left Diagonal
+                        turn = turn + 1;                    % It is now the next turn
+                                                
+                    elseif compInput == 2 && spot2 == 0     % If computer inputs 2 and spot 2 is empty
+                        delete(spotLabel2Text)              % Delete label "2" from board
+                        plot(2,6,'bo', 'MarkerSize', 60)    % Plot O at 2
+                        spot2 = 1;                          % Spot 2 is now full
+                        compRow2(1) = 1;                    % Computer has marked the first spot in Row 2
+                        compColumn1(2) = 1;                 % Computer has marked the second spot in Column 2
+                        turn = turn + 1;                    % It is now the next turn
+                        
+                     elseif compInput == 3 && spot3 == 0     % If computer inputs 3 and spot 3 is empty
+                        delete(spotLabel3Text)              % Delete label "3" from board
+                        plot(2,2,'bo', 'MarkerSize', 60)    % Plot O at 3
+                        spot3 = 1;                          % Spot 3 is now full
+                        compRow3(1) = 1;                    % Computer has marked the first spot in Row 3
+                        compColumn1(3) = 1;                 % Computer has marked the third spot in Column 3
+                        compDiagFromRight(1) = 1;           % Computer has marked the first spot in the Right Diagonal
+                        turn = turn + 1;                    % It is now the next turn
+                          
+                    elseif compInput == 4 && spot4 ==0      % If the computer inputs 4 and spot 4 is empty
+                        delete(spotLabel4Text)              % Delete label "4" from board
+                        plot(6,10,'bo', 'MarkerSize', 60)   % Plot O at 4
+                        spot4 = 1;                          % Spot 4 is now full
+                        compRow1(2) = 1;                    % Computer has marked the second spot in Row 1
+                        compColumn2(1) = 1;                 % Computer has marked the first spot in Column 1
+                        turn = turn + 1;                    % It is now the next turn
+                        
+                     elseif compInput == 5 && spot5 == 0     % If the computer inputs 5 and spot 5 is empty
+                        delete(spotLabel5Text)              % Delete label "5" from board
+                        plot(6,6,'bo', 'MarkerSize', 60)    % Plot O at 5
+                        spot5 = 1;                          % Spot 5 is now full
+                        compRow2(2) = 1;                    % Computer has marked the second spot in Row 2
+                        compColumn2(2) = 1;                 % Computer has marked the second spot in Column 2
+                        compDiagFromLeft(2) = 1;            % Computer has marked the second spot in the Left Diagonal
+                        compDiagFromRight(2) = 1;           % Computer has marked the second spot in the Right Diagonal
+                        turn = turn + 1;                    % It is now the next turn
+                        
+                     elseif compInput == 6 && spot6 == 0     % If the computer inputs 6 and spot 6 is empty
+                        delete(spotLabel6Text)              % Delete label "6" from board
+                        plot(6,2,'bo', 'MarkerSize', 60)    % Plot O at 6
+                        spot6 = 1;                          % Spot 6 is now full
+                        compRow3(2) = 1;                    % Computer has marked the second spot in Row 3
+                        compColumn2(3) = 1;                 % Computer has marked the third spot in Column 2
+                        turn = turn + 1;                    % It is now the next turn
+                        
+                   elseif compInput == 7 && spot7 == 0     % If the computer inputs 7 and spot 7 is empty
+                        delete(spotLabel7Text)              % Delete label "7" from board
+                        plot(10,10,'bo', 'MarkerSize', 60)  % Plot O at 7
+                        spot7 = 1;                          % Spot 7 is now full
+                        compRow1(3) = 1;                    % Computer has marked the third spot in Row 1
+                        compColumn3(1) = 1;                 % Computer has marked the first spot in Column 3
+                        compDiagFromRight(3) = 1;           % Computer has marked the third spot in the Right Diagonal
+                        turn = turn + 1;                    % It is now the next turn
+                        
+                    elseif compInput == 8 && spot8 == 0     % If the computer inputs 8 and spot 8 is empty
+                        delete(spotLabel8Text)              % Delete label "8" from board
+                        plot(10,6,'bo', 'MarkerSize', 60)   % Plot O at 8
+                        spot8 = 1;                          % Spot 8 is now full
+                        compRow2(3) = 1;                    % Computer has marked the third spot in Row 2
+                        compColumn3(2) = 1;                 % Computer has marked the second spot in Column 3
+                        turn = turn + 1;                    % It is now the next turn
+                        
+                    elseif compInput == 9 && spot9 == 0     % If the computer inputs 9 and spot 9 is empty
+                        delete(spotLabel9Text)              % Delete label "9" from board
+                        plot(10,2,'bo', 'MarkerSize', 60)   % Plot O at 9
+                        spot9 = 1;                          % Spot 9 is now full
+                        compRow3(3) = 1;                    % Computer has marked the third spot in Row 3
+                        compColumn3(3) = 1;                 % Computer has marked the third spot in Column 3
+                        compDiagFromLeft(3) = 1;            % Computer has marked the third spot in the Left Diagonal
+                        turn = turn + 1;                    % It is now the next turn
+                        
+                    else
+                    end
+                else
+                    break
+                end
+            end
+            
+            while turn ==7
+                
+                if userWins == '?'
+                    if compRow1 == [1 1 1];
+                        break
+                    elseif compRow2 == [1 1 1];
+                        break
+                    elseif compRow3 == [1 1 1];
+                        break
+                    elseif compColumn1 == [1 1 1]'
+                        break
+                    elseif compColumn2 == [1 1 1]'
+                        break
+                    elseif compColumn3 == [1 1 1]'
+                        break
+                    elseif compDiagFromLeft == [1 1 1]
+                        break
+                    elseif compDiagFromRight == [1 1 1]
+                        break
+                    else
+                        
+                    end
+                end
+                
+                if userWins == '?'
+                    userInput = input('What spot do you want to pick?   ');
+                    
+                    
+                    if userInput == 1                           % If user inputs 1
+                        if spot1 == 0                           % If spot 1 is empty
+                            delete(spotLabel1Text)              % Delete the label "1" on board
+                            plot(2,10,'rX', 'MarkerSize', 60)   % Plot X at 1
+                            spot1 = 1;                          % Spot 1 is now full
+                            userRow1(1) = 1                     % User has marked the first spot in Row 1
+                            userColumn1(1) = 1;                 % User has marked the first spot in Column 1
+                            userDiagFromLeft(1) = 1;            % User has marked the first spot in Left Diagonal
+                            turn = turn + 1;                    % It is the next turn
+                        else
+                        end
+                        
+                        
+                    elseif userInput == 2                       % If user inputs 2
+                        if spot2 == 0                           % If spot 2 is empty
+                            delete(spotLabel2Text)              % Delete the label "2" on board
+                            plot(2,6,'rX', 'MarkerSize', 60)    % Plot X at 2
+                            spot2 = 1;                          % Spot 2 is now full
+                            userRow2(1) = 1                     % User has marked the first spot in Row 2
+                            userColumn1(2) = 1;                 % User has marked the second spot in Column 1
+                            turn = turn + 1;                    % It is the next turn
+                        else
+                        end
+                        
+                    elseif userInput == 3                       % If user inputs 3
+                        if spot3 == 0                           % If spot 3 is empty
+                            delete(spotLabel3Text)              % Delete the label "3" on board
+                            plot(2,2,'rX', 'MarkerSize', 60)    % Plot X at 3
+                            spot3 = 1;                          % Spot 3 is now full
+                            userRow3(1) = 1;                    % User has marked the first spot in Row 3
+                            userColumn1(3) = 1;                 % User has marked the third spot in Column 1
+                            userDiagFromRight(1) = 1;           % User has marked the first spot in the Right Diagonal
+                            turn = turn + 1;                    % It is the next turn
+                        else
+                        end
+                        
+                    elseif userInput == 4                       % If user inputs 4
+                        if spot4 == 0                           % If spot 4 is empty
+                            delete(spotLabel4Text)              % Delete the label "4" on board
+                            plot(6,10,'rX', 'MarkerSize', 60)   % Plot X at 4
+                            spot4 = 1;                          % Spot 4 is now full
+                            userRow1(2) = 1                     % User has marked the second spot in Row 1
+                            userColumn2(1) = 1;                 % User has marked the first spot in Column 1
+                            turn = turn + 1;                    % It is the next turn
+                        else
+                        end
+                        
+                    elseif userInput == 5                       % If user inputs 5
+                        if spot5 == 0                           % If spot 5 is empty
+                            delete(spotLabel5Text)              % Delete the label "5" on board
+                            plot(6,6,'rX', 'MarkerSize', 60)    % Plot X at 5
+                            spot5 = 1;                          % Spot 5 is now full
+                            userRow2(2) = 1                     % User has marked the second spot in Row 2
+                            userColumn2(2) = 1;                 % User has marked the second spot in Column 2
+                            userDiagFromLeft(2) = 1;            % User has marked the second spot in the Left Diagonal
+                            userDiagFromRight(2) = 1;           % User has marked the second spot in the Right Diagonal
+                            turn = turn + 1;                    % It is the next turn
+                        else
+                        end
+                        
+                    elseif userInput == 6                       % If user inputs 6
+                        if spot6 == 0                           % If spot 6 is empty
+                            delete(spotLabel6Text)              % Delete the label "6" on board
+                            plot(6,2,'rX', 'MarkerSize', 60)    % Plot X at 6
+                            spot6 = 1;                          % Spot 6 is now full
+                            userRow3(2) = 1;                    % User has marked the second spot in Row 3
+                            userColumn2(3) = 1;                 % User has marked the third spot in Column 2
+                            turn = turn + 1;                    % It is the next turn
+                        else
+                        end
+                        
+                    elseif userInput == 7                       % If user inputs 7
+                        if spot7 == 0                           % If spot 7 is empty
+                            delete(spotLabel7Text)              % Delete the label "7" on board
+                            plot(10,10,'rX', 'MarkerSize', 60)  % Plot X at 7
+                            spot7 = 1;                          % Spot 7 is now full
+                            userRow1(3) = 1                     % User has marked the thrid spot in Row 3
+                            userColumn3(1) = 1;                 % User has marked the first spot in Column 3
+                            userDiagFromRight(3) = 1;           % User has marked the third spot in the Right Diagonal
+                            turn = turn + 1;                    % It is the next turn
+                        else
+                        end
+                        
+                    elseif userInput == 8                       % If user inputs 8
+                        if spot8 == 0                           % If spot 8 is empty
+                            delete(spotLabel8Text)              % Delete the label "8" on board
+                            plot(10,6,'rX', 'MarkerSize', 60)   % Plot X at 8
+                            spot8 = 1;                          % Spot 8 is now full
+                            userRow2(3) = 1                     % User has marked the third spot in Row 2
+                            userColumn3(2) = 1;                 % User has marked the second spot in Column 3
+                            turn = turn + 1;                    % It is the next turn
+                        else
+                        end
+                        
+                    elseif userInput == 9                       % If user inputs 9
+                        if spot9 == 0                           % If spot 9 is empty
+                            delete(spotLabel9Text)              % Delete the label "9" on board
+                            plot(10,2,'rX', 'MarkerSize', 60)   % Plot X at 9
+                            spot9 = 1;                          % Spot 9 is now full
+                            userRow3(3) = 1;                    % User has marked the third spot in Row 3
+                            userColumn3(3) = 1;                 % User has marked the thrid spot in Column 3
+                            userDiagFromLeft(3) = 1;            % User has marked the third spot in the Right Diagonal
+                            turn = turn + 1;                    % It is the next turn
+                        else
+                        end
+                        
+                    else userInput = input('Please pick a spot that has not been taken   ');
+                    end
+                else
+                    break
+                end
+                
+            end
+            
+            while turn ==8
+                
+                if userWins == '?'
+                    if userRow1 == [1 1 1];
+                        break
+                    elseif userRow2 == [1 1 1];
+                        break
+                    elseif userRow3 == [1 1 1];
+                        break
+                    elseif userColumn1 == [1 1 1]'
+                        break
+                    elseif userColumn2 == [1 1 1]'
+                        break
+                    elseif userColumn3 == [1 1 1]'
+                        break
+                    elseif userDiagFromLeft == [1 1 1]
+                        break
+                    elseif userDiagFromRight == [1 1 1]
+                        break
+                    else
+                        
+                    end
+                end
+                
+                %while turn == 8
+                if userWins == '?'
+                    turn
+                    compInput = randi([1,9],1)
+                    if compInput == 1 && spot1 == 0         % If computer inputs 1 and spot 1 is empty
+                        delete(spotLabel1Text)              % Delete label "1" from board
+                        plot(2,10,'bo', 'MarkerSize', 60)   % Plot O at 1
+                        spot1 = 1;                          % Spot 1 is now full
+                        compRow1(1) = 1;                    % Computer has marked the first spot in Row 1
+                        compColumn1(1) = 1;                 % Computer has marked the first spot in Column 1
+                        compDiagFromLeft(1) = 1;            % Computer has marked the first spot in the Left Diagonal
+                        turn = turn + 1;                    % It is now the next turn
+                        
+                   elseif compInput == 2 && spot2 == 0     % If computer inputs 2 and spot 2 is empty
+                        delete(spotLabel2Text)              % Delete label "2" from board
+                        plot(2,6,'bo', 'MarkerSize', 60)    % Plot O at 2
+                        spot2 = 1;                          % Spot 2 is now full
+                        compRow2(1) = 1;                    % Computer has marked the first spot in Row 2
+                        compColumn1(2) = 1;                 % Computer has marked the second spot in Column 2
+                        turn = turn + 1;                    % It is now the next turn
+                        
+                    elseif compInput == 3 && spot3 == 0     % If computer inputs 3 and spot 3 is empty
+                        delete(spotLabel3Text)              % Delete label "3" from board
+                        plot(2,2,'bo', 'MarkerSize', 60)    % Plot O at 3
+                        spot3 = 1;                          % Spot 3 is now full
+                        compRow3(1) = 1;                    % Computer has marked the first spot in Row 3
+                        compColumn1(3) = 1;                 % Computer has marked the third spot in Column 3
+                        compDiagFromRight(1) = 1;           % Computer has marked the first spot in the Right Diagonal
+                        turn = turn + 1;                    % It is now the next turn
+                            
+                    elseif compInput == 4 && spot4 ==0      % If the computer inputs 4 and spot 4 is empty
+                        delete(spotLabel4Text)              % Delete label "4" from board
+                        plot(6,10,'bo', 'MarkerSize', 60)   % Plot O at 4
+                        spot4 = 1;                          % Spot 4 is now full
+                        compRow1(2) = 1;                    % Computer has marked the second spot in Row 1
+                        compColumn2(1) = 1;                 % Computer has marked the first spot in Column 1
+                        turn = turn + 1;                    % It is now the next turn
+                        
+                   elseif compInput == 5 && spot5 == 0     % If the computer inputs 5 and spot 5 is empty
+                        delete(spotLabel5Text)              % Delete label "5" from board
+                        plot(6,6,'bo', 'MarkerSize', 60)    % Plot O at 5
+                        spot5 = 1;                          % Spot 5 is now full
+                        compRow2(2) = 1;                    % Computer has marked the second spot in Row 2
+                        compColumn2(2) = 1;                 % Computer has marked the second spot in Column 2
+                        compDiagFromLeft(2) = 1;            % Computer has marked the second spot in the Left Diagonal
+                        compDiagFromRight(2) = 1;           % Computer has marked the second spot in the Right Diagonal
+                        turn = turn + 1;                    % It is now the next turn
+                        
+                    elseif compInput == 6 && spot6 == 0     % If the computer inputs 6 and spot 6 is empty
+                        delete(spotLabel6Text)              % Delete label "6" from board
+                        plot(6,2,'bo', 'MarkerSize', 60)    % Plot O at 6
+                        spot6 = 1;                          % Spot 6 is now full
+                        compRow3(2) = 1;                    % Computer has marked the second spot in Row 3
+                        compColumn2(3) = 1;                 % Computer has marked the third spot in Column 2
+                        turn = turn + 1;                    % It is now the next turn
+                        
+                    elseif compInput == 7 && spot7 == 0     % If the computer inputs 7 and spot 7 is empty
+                        delete(spotLabel7Text)              % Delete label "7" from board
+                        plot(10,10,'bo', 'MarkerSize', 60)  % Plot O at 7
+                        spot7 = 1;                          % Spot 7 is now full
+                        compRow1(3) = 1;                    % Computer has marked the third spot in Row 1
+                        compColumn3(1) = 1;                 % Computer has marked the first spot in Column 3
+                        compDiagFromRight(3) = 1;           % Computer has marked the third spot in the Right Diagonal
+                        turn = turn + 1;                    % It is now the next turn
+                        
+                    elseif compInput == 8 && spot8 == 0     % If the computer inputs 8 and spot 8 is empty
+                        delete(spotLabel8Text)              % Delete label "8" from board
+                        plot(10,6,'bo', 'MarkerSize', 60)   % Plot O at 8
+                        spot8 = 1;                          % Spot 8 is now full
+                        compRow2(3) = 1;                    % Computer has marked the third spot in Row 2
+                        compColumn3(2) = 1;                 % Computer has marked the second spot in Column 3
+                        turn = turn + 1;                    % It is now the next turn
+                        
+                    elseif compInput == 9 && spot9 == 0     % If the computer inputs 9 and spot 9 is empty
+                        delete(spotLabel9Text)              % Delete label "9" from board
+                        plot(10,2,'bo', 'MarkerSize', 60)   % Plot O at 9
+                        spot9 = 1;                          % Spot 9 is now full
+                        compRow3(3) = 1;                    % Computer has marked the third spot in Row 3
+                        compColumn3(3) = 1;                 % Computer has marked the third spot in Column 3
+                        compDiagFromLeft(3) = 1;            % Computer has marked the third spot in the Left Diagonal
+                        turn = turn + 1;                    % It is now the next turn
+                        
+                    else
+                    end
+                else break
+                end
+            end
+            
+            while turn ==9
+                if userWins == '?'
+                    if compRow1 == [1 1 1];
+                        %                         msgbox('You Lose!')
+                        %                         userWins = 'N';
+                        %                         disp('Uh oh, you lost! Thanks for playing!')
+                        break
+                    elseif compRow2 == [1 1 1];
+                        %                         msgbox('You Lose!')
+                        %                         userWins = 'N';
+                        %                         disp('Uh oh, you lost! Thanks for playing!')
+                        break
+                    elseif compRow3 == [1 1 1];
+                        %                         msgbox('You Lose!')
+                        %                         userWins = 'N';
+                        %                         disp('Uh oh, you lost! Thanks for playing!')
+                        break
+                    elseif compColumn1 == [1 1 1]'
+                        %                         msgbox('You Lose!')
+                        %                         userWins = 'N';
+                        %                         disp('Uh oh, you lost! Thanks for playing!')
+                        break
+                    elseif compColumn2 == [1 1 1]'
+                        %                         msgbox('You Lose!')
+                        %                         userWins = 'N';
+                        %                         disp('Uh oh, you lost! Thanks for playing!')
+                        break
+                    elseif compColumn3 == [1 1 1]'
+                        %                         msgbox('You Lose!')
+                        %                         userWins = 'N';
+                        %                         disp('Uh oh, you lost! Thanks for playing!')
+                        break
+                    elseif compDiagFromLeft == [1 1 1]
+                        %                         msgbox('You Lose!')
+                        %                         userWins = 'N';
+                        %                         disp('Uh oh, you lost! Thanks for playing!')
+                        break
+                    elseif compDiagFromRight == [1 1 1]
+                        %                         msgbox('You Lose!')
+                        %                         userWins = 'N';
+                        %                         disp('Uh oh, you lost! Thanks for playing!')
+                        break
+                    else
+                        
+                    end
+                end
+                
+                if userWins == '?'
+                    userInput = input('What spot do you want to pick?   ');
+                    
+                    
+                    if userInput == 1                           % If user inputs 1
+                        if spot1 == 0                           % If spot 1 is empty
+                            delete(spotLabel1Text)              % Delete the label "1" on board
+                            plot(2,10,'rX', 'MarkerSize', 60)   % Plot X at 1
+                            spot1 = 1;                          % Spot 1 is now full
+                            userRow1(1) = 1                     % User has marked the first spot in Row 1
+                            userColumn1(1) = 1;                 % User has marked the first spot in Column 1
+                            userDiagFromLeft(1) = 1;            % User has marked the first spot in Left Diagonal
+                            turn = turn + 1;                    % It is the next turn
+                        else
+                        end
+                        
+                        
+                    elseif userInput == 2                       % If user inputs 2
+                        if spot2 == 0                           % If spot 2 is empty
+                            delete(spotLabel2Text)              % Delete the label "2" on board
+                            plot(2,6,'rX', 'MarkerSize', 60)    % Plot X at 2
+                            spot2 = 1;                          % Spot 2 is now full
+                            userRow2(1) = 1                     % User has marked the first spot in Row 2
+                            userColumn1(2) = 1;                 % User has marked the second spot in Column 1
+                            turn = turn + 1;                    % It is the next turn
+                        else
+                        end
+                        
+                    elseif userInput == 3                       % If user inputs 3
+                        if spot3 == 0                           % If spot 3 is empty
+                            delete(spotLabel3Text)              % Delete the label "3" on board
+                            plot(2,2,'rX', 'MarkerSize', 60)    % Plot X at 3
+                            spot3 = 1;                          % Spot 3 is now full
+                            userRow3(1) = 1;                    % User has marked the first spot in Row 3
+                            userColumn1(3) = 1;                 % User has marked the third spot in Column 1
+                            userDiagFromRight(1) = 1;           % User has marked the first spot in the Right Diagonal
+                            turn = turn + 1;                    % It is the next turn
+                        else
+                        end
+                        
+                    elseif userInput == 4                       % If user inputs 4
+                        if spot4 == 0                           % If spot 4 is empty
+                            delete(spotLabel4Text)              % Delete the label "4" on board
+                            plot(6,10,'rX', 'MarkerSize', 60)   % Plot X at 4
+                            spot4 = 1;                          % Spot 4 is now full
+                            userRow1(2) = 1                     % User has marked the second spot in Row 1
+                            userColumn2(1) = 1;                 % User has marked the first spot in Column 1
+                            turn = turn + 1;                    % It is the next turn
+                        else
+                        end
+                        
+                    elseif userInput == 5                       % If user inputs 5
+                        if spot5 == 0                           % If spot 5 is empty
+                            delete(spotLabel5Text)              % Delete the label "5" on board
+                            plot(6,6,'rX', 'MarkerSize', 60)    % Plot X at 5
+                            spot5 = 1;                          % Spot 5 is now full
+                            userRow2(2) = 1                     % User has marked the second spot in Row 2
+                            userColumn2(2) = 1;                 % User has marked the second spot in Column 2
+                            userDiagFromLeft(2) = 1;            % User has marked the second spot in the Left Diagonal
+                            userDiagFromRight(2) = 1;           % User has marked the second spot in the Right Diagonal
+                            turn = turn + 1;                    % It is the next turn
+                        else
+                        end
+                        
+                    elseif userInput == 6                       % If user inputs 6
+                        if spot6 == 0                           % If spot 6 is empty
+                            delete(spotLabel6Text)              % Delete the label "6" on board
+                            plot(6,2,'rX', 'MarkerSize', 60)    % Plot X at 6
+                            spot6 = 1;                          % Spot 6 is now full
+                            userRow3(2) = 1;                    % User has marked the second spot in Row 3
+                            userColumn2(3) = 1;                 % User has marked the third spot in Column 2
+                            turn = turn + 1;                    % It is the next turn
+                        else
+                        end
+                        
+                    elseif userInput == 7                       % If user inputs 7
+                        if spot7 == 0                           % If spot 7 is empty
+                            delete(spotLabel7Text)              % Delete the label "7" on board
+                            plot(10,10,'rX', 'MarkerSize', 60)  % Plot X at 7
+                            spot7 = 1;                          % Spot 7 is now full
+                            userRow1(3) = 1                     % User has marked the thrid spot in Row 3
+                            userColumn3(1) = 1;                 % User has marked the first spot in Column 3
+                            userDiagFromRight(3) = 1;           % User has marked the third spot in the Right Diagonal
+                            turn = turn + 1;                    % It is the next turn
+                        else
+                        end
+                        
+                    elseif userInput == 8                       % If user inputs 8
+                        if spot8 == 0                           % If spot 8 is empty
+                            delete(spotLabel8Text)              % Delete the label "8" on board
+                            plot(10,6,'rX', 'MarkerSize', 60)   % Plot X at 8
+                            spot8 = 1;                          % Spot 8 is now full
+                            userRow2(3) = 1                     % User has marked the third spot in Row 2
+                            userColumn3(2) = 1;                 % User has marked the second spot in Column 3
+                            turn = turn + 1;                    % It is the next turn
+                        else
+                        end
+                        
+                    elseif userInput == 9                       % If user inputs 9
+                        if spot9 == 0                           % If spot 9 is empty
+                            delete(spotLabel9Text)              % Delete the label "9" on board
+                            plot(10,2,'rX', 'MarkerSize', 60)   % Plot X at 9
+                            spot9 = 1;                          % Spot 9 is now full
+                            userRow3(3) = 1;                    % User has marked the third spot in Row 3
+                            userColumn3(3) = 1;                 % User has marked the thrid spot in Column 3
+                            userDiagFromLeft(3) = 1;            % User has marked the third spot in the Right Diagonal
+                            turn = turn + 1;                    % It is the next turn
+                        else
+                        end
+                        
+                    else userInput = input('Please pick a spot that has not been taken   ');
+                    end
+                else
+                    break
+                end
+                
+            end
+            
+        end
+        
+        if userRow1 == [1 1 1];
+            msgbox('You Win!')
+            userWins = 'Y';
+            clc
+            disp('Way to go! Thanks for playing winner!')
+            
+        elseif userRow2 == [1 1 1];
+            msgbox('You Win!')
+            userWins = 'Y';
+            clc
+            disp('Way to go! Thanks for playing winner!')
+            
+        elseif userRow3 == [1 1 1];
+            msgbox('You Win!')
+            userWins = 'Y';
+            clc
+            disp('Way to go! Thanks for playing winner!')
+            
+        elseif userColumn1 == [1 1 1]'
+            msgbox('You Win!')
+            userWins = 'Y';
+            clc
+            disp('Way to go! Thanks for playing winner!')
+            
+        elseif userColumn2 == [1 1 1]'
+            msgbox('You Win!')
+            userWins = 'Y';
+            clc
+            disp('Way to go! Thanks for playing winner!')
+            
+        elseif userColumn3 == [1 1 1]'
+            msgbox('You Win!')
+            userWins = 'Y';
+            clc
+            disp('Way to go! Thanks for playing winner!')
+            
+        elseif userDiagFromLeft == [1 1 1]
+            msgbox('You Win!')
+            userWins = 'Y';
+            clc
+            disp('Way to go! Thanks for playing winner!')
+            
+        elseif userDiagFromRight == [1 1 1]
+            msgbox('You Win!')
+            userWins = 'Y';
+            clc
+            disp('Way to go! Thanks for playing winner!')
+            
+        elseif compRow1 == [1 1 1];
+            msgbox('You Lose!')
+            userWins = 'N';
+            clc
+            disp('Uh oh, you lost! Thanks for playing!')
+            break
+        elseif compRow2 == [1 1 1];
+            msgbox('You Lose!')
+            userWins = 'N';
+            clc
+            disp('Uh oh, you lost! Thanks for playing!')
+            break
+        elseif compRow3 == [1 1 1];
+            msgbox('You Lose!')
+            userWins = 'N';
+            clc
+            disp('Uh oh, you lost! Thanks for playing!')
+            break
+        elseif compColumn1 == [1 1 1]'
+            msgbox('You Lose!')
+            userWins = 'N';
+            clc
+            disp('Uh oh, you lost! Thanks for playing!')
+            break
+        elseif compColumn2 == [1 1 1]'
+            msgbox('You Lose!')
+            userWins = 'N';
+            clc
+            disp('Uh oh, you lost! Thanks for playing!')
+            break
+        elseif compColumn3 == [1 1 1]'
+            msgbox('You Lose!')
+            userWins = 'N';
+            clc
+            disp('Uh oh, you lost! Thanks for playing!')
+        elseif compDiagFromLeft == [1 1 1]
+            msgbox('You Lose!')
+            userWins = 'N';
+            clc
+            disp('Uh oh, you lost! Thanks for playing!')
+            break
+        elseif compDiagFromRight == [1 1 1]
+            msgbox('You Lose!')
+            userWins = 'N';
+            clc
+            disp('Uh oh, you lost! Thanks for playing!')
+            break
+            
         else
+            if userWins == 'Y'
+            elseif userWins == 'N'
+            else
+                msgbox('It''s a draw!')
+                clc
+                disp('Oh no, a Draw! That could have ended better! Thanks for playing!')
+                userWins = 'T';
+            end
         end
         
-    elseif userInput1 == 'One'
-        if slot1 == 0
-        delete(slotLabel1Text)
-        plot(2,10,'rX', 'MarkerSize', 60)
-        slot1 = 'Filled';
-        n=n+1;
-        userScoreColumn1 = userScoreColumn1 + 1;
-        userScoreRow1 = userScoreRow1 + 1;
-        userScoreDiagFromLeft = userScoreDiagFromLeft +1;
-        break
-        
-        else
-        end
-        
-    elseif userInput1 == 'one'
-        if slot1 == 0
-        delete(slotLabel1Text)
-        plot(2,10,'rX', 'MarkerSize', 60)
-        slot1 = 'Filled';
-        n=n+1;
-        userScoreColumn1 = userScoreColumn1 + 1;
-        userScoreRow1 = userScoreRow1 + 1;
-        userScoreDiagFromLeft = userScoreDiagFromLeft +1;
-        break
-        
-        else
-        end
-        
-     elseif userInput1 == 2
-         if slot2 == 0
-        delete(slotLabel2Text)
-        plot(2,6,'rX', 'MarkerSize', 60)
-        slot2 = 'Filled';
-        n=n+1;
-        userScoreColumn1 = userScoreColumn1 + 1;
-        userScoreRow2 = userScoreRow2 + 1;
-        break
-        
-         else
-         end
-        
-    elseif userInput1 == 'Two'
-        if slot2 == 0
-        delete(slotLabel2Text)
-        plot(2,6,'rX', 'MarkerSize', 60)
-        slot2 = 'Filled';
-        n=n+1;
-        userScoreColumn1 = userScoreColumn1 + 1;
-        userScoreRow2 = userScoreRow2 + 1;
-        break
-        
-        else 
-        end
-        
-    elseif userInput1 == 'two'
-        if slot2 == 0
-        delete(slotLabel2Text)
-        plot(2,6,'rX', 'MarkerSize', 60)
-        slot2 = 'Filled';
-        n=n+1;
-        userScoreColumn1 = userScoreColumn1 + 1;
-        userScoreRow2 = userScoreRow2 + 1;
-        break
-        
-        else
-        end
-        
-    elseif userInput1 == 3
-        if slot3 == 0
-        delete(slotLabel3Text)
-        plot(2,2,'rX', 'MarkerSize', 60)
-        slot3 = 'Filled';
-        n=n+1;
-        userScoreColumn1 = userScoreColumn1 + 1;
-        userScoreRow3 = userScoreRow3 + 1;
-        userScoreDiagFromRight = userScoreDiagFromRight+1;
-        break
-        
-        else
-        end
-        
-    elseif userInput1 == 'Three'
-        if slot3 == 0
-        delete(slotLabel3Text)
-        plot(2,2,'rX', 'MarkerSize', 60)
-        slot3 = 'Filled';
-        n=n+1;        
-        userScoreColumn1 = userScoreColumn1 + 1;
-        userScoreRow3 = userScoreRow3 + 1;
-        userScoreDiagFromRight = userScoreDiagFromRight+1;
-        break
-        
-        else
-        end
-        
-    elseif userInput1 == 'three'
-        if slot3 == 0
-        delete(slotLabel3Text)
-        plot(2,2,'rX', 'MarkerSize', 60)
-        slot3 = 'Filled';
-        n=n+1;        
-        userScoreColumn1 = userScoreColumn1 + 1;
-        userScoreRow3 = userScoreRow3 + 1;
-        userScoreDiagFromRight = userScoreDiagFromRight+1;
-        break
-        
-        else
-        end
-        
-    elseif userInput1 == 4
-        if slot4 == 0
-        delete(slotLabel4Text)
-        plot(6,10,'rX', 'MarkerSize', 60)
-        slot4 = 'Filled';
-        n=n+1;
-        userScoreColumn2 = userScoreColumn2 +1;
-        userScoreRow1 = userScoreRow1 + 1;
-        break
-        
-        else
-        end
-        
-    elseif userInput1 == 'Four'
-        if slot4 == 0
-        delete(slotLabel4Text)
-        plot(6,10,'rX', 'MarkerSize', 60)
-        slot4 = 'Filled';
-        n=n+1;
-        userScoreColumn2 = userScoreColumn2 +1;
-        userScoreRow1 = userScoreRow1 + 1;
-        break
-        
-        else
-        end
-        
-    elseif userInput1 == 'four'
-        if slot4 == 0
-        delete(slotLabel4Text)
-        plot(6,10,'rX', 'MarkerSize', 60)
-        slot4 = 'Filled';
-        n=n+1;
-        userScoreColumn2 = userScoreColumn2 +1;
-        userScoreRow1 = userScoreRow1 + 1;
-        break
-        
-        else
-        end
-        
-    elseif userInput1 == 5
-        if slot5 == 0
-        delete(slotLabel5Text)
-        plot(6,6,'rX', 'MarkerSize', 60)
-        slot5 = 'Filled';
-        n=n+1;
-        userScoreColumn2 = userScoreColumn2 +1;
-        userScoreRow2 = userScoreRow2 + 1;
-        userScoreDiagFromLeft = userScoreDiagFromLeft +1;
-        userScoreDiagFromRight = userScoreDiagFromRight+1;
-        break
-        
-        else
-        end
-        
-    elseif userInput1 == 'Five'
-        if slot5 == 0
-        delete(slotLabel5Text)
-        plot(6,6,'rX', 'MarkerSize', 60)
-        slot5 = 'Filled';
-        n=n+1;        
-        userScoreColumn2 = userScoreColumn2 +1;
-        userScoreRow2 = userScoreRow2 + 1;
-        userScoreDiagFromLeft = userScoreDiagFromLeft +1;
-        userScoreDiagFromRight = userScoreDiagFromRight+1;
-        break
-        
-        else
-        end
-        
-    elseif userInput1 == 'five'
-        if slot5 == 0
-        delete(slotLabel5Text)
-        plot(6,6,'rX', 'MarkerSize', 60)
-        slot5 = 'Filled';
-        n=n+1;        
-        userScoreColumn2 = userScoreColumn2 +1;
-        userScoreRow2 = userScoreRow2 + 1;
-        userScoreDiagFromLeft = userScoreDiagFromLeft +1;
-        userScoreDiagFromRight = userScoreDiagFromRight+1;
-        break
-        
-        else
-        end
-        
-    elseif userInput1 == 6
-        if slot6 == 0
-        delete(slotLabel6Text)
-        plot(6,2,'rX', 'MarkerSize', 60)
-        slot6 = 'Filled';
-        n=n+1;        
-        userScoreColumn2 = userScoreColumn2 +1;
-        userScoreRow3 = userScoreRow3 + 1;
-        break
-        
-        else
-        end
-        
-    elseif userInput1 == 'Six'
-        if slot6 == 0
-        delete(slotLabel6Text)
-        plot(6,2,'rX', 'MarkerSize', 60)
-        slot6 = 'Filled';
-        n=n+1;        
-        userScoreColumn2 = userScoreColumn2 +1;
-        userScoreRow3 = userScoreRow3 + 1;
-        break
-        
-        else
-        end
-        
-    elseif userInput1 == 'six'
-        if slot6 == 0
-        delete(slotLabel6Text)
-        plot(6,2,'rX', 'MarkerSize', 60)
-        slot6 = 'Filled';
-        n=n+1;        
-        userScoreColumn2 = userScoreColumn2 +1;
-        userScoreRow3 = userScoreRow3 + 1;
-        break
-        
-        else
-        end
-        
-    elseif userInput1 == 7
-        if slot7 == 0
-        delete(slotLabel7Text)
-        plot(10,10,'rX', 'MarkerSize', 60)
-        slot7 = 'Filled';
-        n=n+1;
-        userScoreColumn3 = userScoreColumn3 +1;
-        userScoreRow1 = userScoreRow1 + 1;
-        userScoreDiagFromRight = userScoreDiagFromRight+1;
-        break
-        
-        else
-        end
-        
-    elseif userInput1 == 'Seven'
-        if slot7 == 0
-        delete(slotLabel7Text)
-        plot(10,10,'rX', 'MarkerSize', 60)
-        slot7 = 'Filled';
-        n=n+1;
-        userScoreColumn3 = userScoreColumn3 +1;
-        userScoreRow1 = userScoreRow1 + 1;
-        userScoreDiagFromRight = userScoreDiagFromRight+1;
-        break
-        
-        else
-        end
-        
-    elseif userInput1 == 'seven'
-        if slot7 == 0
-        delete(slotLabel7Text)
-        plot(10,10,'rX', 'MarkerSize', 60)
-        slot7 = 'Filled';
-        n=n+1;
-        userScoreColumn3 = userScoreColumn3 +1;
-        userScoreRow1 = userScoreRow1 + 1;
-        userScoreDiagFromRight = userScoreDiagFromRight+1;
-        break
-        
-        else
-        end
-        
-    elseif userInput1 == 8
-        if slot8 == 0
-        delete(slotLabel8Text)
-        plot(10,6,'rX', 'MarkerSize', 60)
-        slot8 = 'Filled';
-        n=n+1;        
-        userScoreColumn3 = userScoreColumn3 +1;
-        userScoreRow2 = userScoreRow2 + 1;
-        break
-        
-        else
-        end
-        
-    elseif userInput1 == 'Eight'
-        if slot8 == 0
-        delete(slotLabel8Text)
-        plot(10,6,'rX', 'MarkerSize', 60)
-        slot8 = 'Filled';
-        n=n+1;        
-        userScoreColumn3 = userScoreColumn3 +1;
-        userScoreRow2 = userScoreRow2 + 1;
-        break
-        
-        else
-        end
-        
-    elseif userInput1 == 'eight'
-        if slot8 == 0
-        delete(slotLabel8Text)
-        plot(10,6,'rX', 'MarkerSize', 60)
-        slot8 = 'Filled';
-        n=n+1;        
-        userScoreColumn3 = userScoreColumn3 +1;
-        userScoreRow2 = userScoreRow2 + 1;
-        break
-        
-        else
-        end
-        
-    elseif userInput1 == 9
-        if slot9 == 0
-        delete(slotLabel9Text)
-        plot(10,2,'rX', 'MarkerSize', 60)
-        slot9 = 'Filled';
-        n=n+1;
-        userScoreColumn3 = userScoreColumn3 +1;
-        userScoreRow3 = userScoreRow3 + 1;
-        break
-        
-        else
-        end
-        
-    elseif userInput1 == 'Nine'
-        if slot9 == 0
-        delete(slotLabel9Text)
-        plot(10,2,'rX', 'MarkerSize', 60)
-        slot9 = 'Filled';
-        n=n+1;
-        userScoreColumn3 = userScoreColumn3 +1;
-        userScoreRow3 = userScoreRow3 + 1;
-        break
-        
-        else
-        end
-        
-    elseif userInput1 == 'nine'
-        if slot9 == 0
-        delete(slotLabel9Text)
-        plot(10,2,'rX', 'MarkerSize', 60)
-        slot9 = 'Filled';
-        n=n+1;
-        userScoreColumn3 = userScoreColumn3 +1;
-        userScoreRow3 = userScoreRow3 + 1;
-        break
-        
-        else
-        end
-    
     end
-   
-    
-
-
- if     winnerResultIndicator ==0 
-if userScoreColumn1 == 3;
-    winnerResult = msgbox(userWin);
-    winnerResultIndicator = 1;
-    close all
     
     
-elseif userScoreColumn2 == 3;
-    winnerResult = msgbox(userWin);
-    winnerResultIndicator = 1;
-    close all
-     
-    
-    elseif userScoreColumn3 == 3;
-    winnerResult = msgbox(userWin);
-    winnerResultIndicator = 1;
-    close all
-    
-    
-    elseif userScoreRow1 == 3;
-    winnerResult = msgbox(userWin);
-    winnerResultIndicator = 1;
-    close all
-    
-    
-    elseif userScoreRow2 == 3;
-    winnerResult = msgbox(userWin);
-    winnerResultIndicator = 1;
-    close all
-    
-    
-    elseif userScoreRow3 == 3;
-    winnerResult = msgbox(userWin);  
-    winnerResultIndicator = 1;
-    close all
-    
-    
-    elseif userScoreDiagFromLeft == 3;
-    winnerResult = msgbox(userWin);
-    winnerResultIndicator = 1;
-    close all
-   
-    
-    elseif userScoreDiagFromRight == 3;
-    winnerResult = msgbox(userWin);
-    winnerResultIndicator = 1;
-    close all
-    
-    
-elseif compScoreColumn1 == 3;
-    winnerResult = msgbox(computerWin);
-    winnerResultIndicator = 2;
-    close all
-    
-    
-elseif compScoreColumn2 == 3;
-    winnerResult = msgbox(computerWin);
-    winnerResultIndicator = 2;
-    close all
-    
-    
-elseif compScoreColumn3 == 3;
-    winnerResult = msgbox(computerWin);
-    winnerResultIndicator = 2;
-    close all
-    
-    
-elseif compScoreRow1 == 3;
-    winnerResult = msgbox(computerWin);
-    winnerResultIndicator = 2;
-    close all
-    
-    
-elseif compScoreRow2 == 3;
-    winnerResult = msgbox(computerWin);
-    winnerResultIndicator = 2;
-    close all
-    
-    
-elseif compScoreRow3 == 3;
-    winnerResult = msgbox(computerWin);
-    winnerResultIndicator = 2;
-    close all
-    
-    
-elseif compScoreDiagFromLeft == 3;
-    winnerResult = msgbox(computerWin);
-    winnerResultIndicator = 2;
-    close all
-    
-    
-elseif compScoreDiagFromRight == 3;
-    winnerResult = msgbox(computerWin);
-    winnerResultIndicator = 2;
-    close all
-    
-    
-else
+    while replayPrompt == 0
+        replayAnswer = input('Would you like to play again?  Y/N ', 's')
+        if replayAnswer == 'Y'
+            disp('Great! This time will be better than the last!')
+            pause(0.5)
+            turn = 1;
+            userWins = '?';
+            answer = 1;
+            replayPrompt = 1;
+        elseif replayAnswer == 'N'
+            disp('Okay, come back soon!')
+            replayPrompt = 1;
+            pause(1)
+            quit
+        else
+            
+            replayAnswer = input('Please input a Y or N. Would you like to play again?   ', 's')
+            
+        end
+        
+    end
 end
 
- end
- 
-
-if winnerResultIndicator == 1;
-    askRematch = input(promptRematchWinner, 's')
-    if askRematch == 'Y'
-        n=1;
-    elseif askRematch == 'N'
-        n=1;
-    else 
-           promptRematchWinner = 'Cmon winner, please reply with Y or N  ' % If user inputs invalid answer
-           askRematch = input(promptRematchWinner, 's')
-    if askRematch == 'Y'
-        n=1;
-        disp('Great! Lets go again!')
-    elseif askRematch == 'N'
-        n=1;
-        disp('Okay, come back soon! Goodbye!')
-        quit
-        
-    else disp('Alright, I am just going to assume you do not want to play again. Have a nice day!')
-        quit
-    end
-    end
-
-    
-elseif winnerResultIndicator == 2;
-    askRematch = input(promptRematchLoser, 's')
-    if askRematch == 'Y'
-        n=1;
-    elseif askRematch == 'N'
-        n=1;
-    else 
-           promptRematchLoser = 'Hey you lost, but you can try again. Please reply with Y or N  ' % If user inputs invalid answer
-           askRematch = input(promptRematchLoser, 's')
-    if askRematch == 'Y'
-        n=1;
-        disp('Great! Lets go again!')
-    elseif askRematch == 'N'
-        n=1;
-        disp('Okay, come back soon! Goodbye!')
-        quit
-        
-    else disp('Alright, I am just going to assume you do not want to play again. Have a nice day!')
-        quit
-    end
-    end
-    
-elseif winnerResultIndicator == 0
-    n=n;
-else
-draw = msgbox('It is a Draw!');
-    askRematch = input(promptRematchDraw, 's')
-        askRematch = input(promptRematchDraw, 's')
-    if askRematch == 'Y'
-        n=1;
-    elseif askRematch == 'N'
-        n=1;
-    else 
-           promptRematchDraw = 'You don''t want to end on a tie! Please reply with Y or N  ' % If user inputs invalid answer
-           askRematch = input(promptRematchDraw, 's')
-    if askRematch == 'Y'
-        n=1;
-        disp('Great! Lets go again!')
-    elseif askRematch == 'N'
-        n=1;
-        disp('Okay, come back soon! Goodbye!')
-        quit
-        
-    else disp('Alright, I am just going to assume you do not want to play again. Have a nice day!')
-        quit
-    end
-    end
-    
-end
-end
-  
-                    %!!! CODE FOR THE COMPUTER'S TURN !!!%
-
-while n == 2|4|6|8;
-
-nx=0;               % Counter for ensuring that the computer does not place marker in an unwanted position 
-ny=0;               % Counter for ensuring that the computer does not place marker in an unwanted position 
-    
-while nx == 0       % Counter for ensuring that the computer does not place marker in an unwanted position
-    
-computerOutputx = randi([2 10],1);
-if computerOutputx == 1
-    nx = 0;
-elseif computerOutputx == 3
-    nx = 0;
-elseif computerOutputx == 4
-    nx = 0;
-elseif computerOutputx == 5
-    nx = 0;
-elseif computerOutputx == 7
-    nx = 0;
-elseif computerOutputx == 8
-    nx = 0;
-elseif computerOutputx == 9
-    nx = 0;
-elseif computerOutputx == 11
-    nx = 0;
-else
-    nx = 1;
-
-end
-end
-
-while ny == 0
-computerOutputy = randi([2 10],1);
-if computerOutputy == 1
-    ny = 0;
-elseif computerOutputy == 3
-    ny = 0;
-elseif computerOutputy == 4
-    ny = 0;
-elseif computerOutputy == 5
-    ny = 0;
-elseif computerOutputy == 7
-    ny = 0;
-elseif computerOutputy == 8
-    ny = 0;
-elseif computerOutputy == 9
-    ny = 0;
-elseif computerOutputy == 11
-    ny = 0;
-else
-    ny = 1;
-
-end
-end
-
-   ComputerInput1 = ([computerOutputx,computerOutputy]);
-   
-if ComputerInput1 == ([2,10])
-    if slot1 == 0
-        delete(slotLabel1Text)
-        plot(computerOutputx,computerOutputy,'bo', 'MarkerSize', 60)
-        slot1 = 1;
-        n=n+1;
-        compScoreColumn1 = compScoreColumn1 + 1;
-        compScoreRow1 = compScoreRow1 + 1;
-        compScoreDiagFromLeft = compScoreDiagFromLeft +1;
-        break
-        
-    else
-    end
-        
-elseif ComputerInput1 == ([2,6])
-    if slot2 == 0
-        delete(slotLabel2Text)
-        plot(computerOutputx,computerOutputy,'bo', 'MarkerSize', 60)
-        slot2 = 1;
-        n=n+1;
-        compScoreColumn1 = compScoreColumn1 + 1;
-        compScoreRow2 = compScoreRow2 + 1;
-        break
-    else
-    end
-        
-elseif ComputerInput1 == ([2,2])
-      if slot3 == 0
-        delete(slotLabel3Text)
-        plot(computerOutputx,computerOutputy,'bo', 'MarkerSize', 60)
-        slot3 = 1;
-        n=n+1;
-        compScoreColumn1 = compScoreColumn1 + 1;
-        compScoreRow3 = compScoreRow3 + 1;
-        compScoreDiagFromRight = compScoreDiagFromRight+1;
-        break
-        
-      else
-      end
-    
-elseif ComputerInput1 == ([6,10])
-   if slot4 == 0
-        delete(slotLabel4Text)
-        plot(computerOutputx,computerOutputy,'bo', 'MarkerSize', 60)
-        slot4 = 1;
-        n=n+1;
-        compScoreColumn2 = compScoreColumn2 +1;
-        compScoreRow1 = compScoreRow1 + 1;
-        break
-        
-   else
-   end
-    
-elseif ComputerInput1 == ([6,6])
-    if slot5 == 0
-        delete(slotLabel5Text)
-        plot(computerOutputx,computerOutputy,'bo', 'MarkerSize', 60)
-        slot5 = 1;
-        n=n+1;
-        compScoreColumn2 = compScoreColumn2 +1;
-        compScoreRow2 = compScoreRow2 + 1;
-        compScoreDiagFromLeft = compScoreDiagFromLeft +1;
-        compScoreDiagFromRight = compScoreDiagFromRight+1;
-        break
-        
-    else
-    end
-    
-elseif ComputerInput1 == ([6,2])
-    if slot6 == 0
-        delete(slotLabel6Text)
-        plot(computerOutputx,computerOutputy,'bo', 'MarkerSize', 60)
-        slot6 = 1;
-        n=n+1;
-        compScoreColumn2 = compScoreColumn2 +1;
-        compScoreRow3 = compScoreRow3 + 1;
-        break
-        
-    else
-    end
-
-elseif ComputerInput1 == ([10,10])
-   if slot7 == 0
-        delete(slotLabel7Text)
-        plot(computerOutputx,computerOutputy,'bo', 'MarkerSize', 60)
-        slot7 = 1;
-        n=n+1;
-        compScoreColumn3 = compScoreColumn3 +1;
-        compScoreRow1 = compScoreRow1 + 1;
-        compScoreDiagFromRight = compScoreDiagFromRight+1;
-        break
-        
-   else
-   end
-
-    
-elseif ComputerInput1 == ([10,6])
-   if slot8 == 0
-        delete(slotLabel8Text)
-        plot(computerOutputx,computerOutputy,'bo', 'MarkerSize', 60)
-        slot8 = 1;
-        n=n+1;
-        compScoreColumn3 = compScoreColumn3 +1;
-        compScoreRow2 = compScoreRow2 + 1;
-        break
-        
-   else 
-   end
-    
-elseif ComputerInput1 == ([10,2])
-    if slot9 == 0
-        delete(slotLabel9Text)
-        plot(computerOutputx,computerOutputy,'bo', 'MarkerSize', 60)
-        slot9 = 1;
-        n=n+1;
-        compScoreColumn3 = compScoreColumn3 +1;
-        compScoreRow3 = compScoreRow3 + 1;
-        break
-        
-    else
-        n;
-    end
-
-else
-    n
-
-end
-end 
-    
-% Determining if there is a winner %
-
- if     winnerResultIndicator ==0 
-if userScoreColumn1 == 3;
-    msgbox('You Win!');
-    winnerResultIndicator = 1;
-    close all
-    
-    
-elseif userScoreColumn2 == 3;
-    msgbox('You Win!');
-    winnerResultIndicator = 1;
-    close all
-     
-    
-    elseif userScoreColumn3 == 3;
-    msgbox('You Win!');
-    winnerResultIndicator = 1;
-    close all
-    
-    
-    elseif userScoreRow1 == 3;
-    msgbox('You Win!');
-    winnerResultIndicator = 1;
-    close all
-    
-    
-    elseif userScoreRow2 == 3;
-    msgbox('You Win!');
-    winnerResultIndicator = 1;
-    close all
-    
-    
-    elseif userScoreRow3 == 3;
-    msgbox('You Win!');  
-    winnerResultIndicator = 1;
-    close all
-    
-    
-    elseif userScoreDiagFromLeft == 3;
-    msgbox('You Win!');
-    winnerResultIndicator = 1;
-    close all
-    
-    
-    elseif userScoreDiagFromRight == 3;
-    msgbox('You Win!');
-    winnerResultIndicator = 1;
-    close all
-    
-    
-elseif compScoreColumn1 == 3;
-    msgbox('You Lose!');
-    winnerResultIndicator = 2;
-    close all
-    
-    
-elseif compScoreColumn2 == 3;
-    msgbox('You Lose!');
-    winnerResultIndicator = 2;
-    close all
-    
-    
-elseif compScoreColumn3 == 3;
-    msgbox('You Lose!');
-    winnerResultIndicator = 2;
-    close all
-    
-    
-elseif compScoreRow1 == 3;
-    msgbox('You Lose!');
-    winnerResultIndicator = 2;
-    close all
-    
-    
-elseif compScoreRow2 == 3;
-    msgbox('You Lose!');
-    winnerResultIndicator = 2;
-    close all
-    
-    
-elseif compScoreRow3 == 3;
-    msgbox('You Lose!');
-    winnerResultIndicator = 2;
-    close all
-    
-elseif compScoreDiagFromLeft == 3;
-    msgbox('You Lose!');
-    winnerResultIndicator = 2;
-    close all
-    
-    
-elseif compScoreDiagFromRight == 3;
-    msgbox('You Lose!');
-    winnerResultIndicator = 2;
-    close all
-    
-    
-else
-end
-
- end
- 
-
-if winnerResultIndicator == 1;
-    askRematch = input(promptRematchWinner, 's')
-    if askRematch == 'Y'
-        n=1;
-        continue
-    elseif askRematch == 'N'
-        n=1;
-        quit
-    else 
-           promptRematchWinner = 'Please reply with Y or N  ' % If user inputs invalid answer
-           askRematch = input(promptRematchWinner, 's')
-    if askRematch == 'Y'
-        n=1;
-        disp('Great! Lets go again!')
-        continue 
-    elseif askRematch == 'N'
-        n=1;
-        disp('Okay, come back soon! Goodbye!')
-        quit
-        
-    else disp('Alright, I am just going to assume you do not want to play again. Have a nice day!')
-        quit
-    end
-    end
-
-    
-elseif winnerResultIndicator == 2;
-    askRematch = input(promptRematchLoser, 's')
-        askRematch = input(promptRematchLoser, 's')
-    if askRematch == 'Y'
-        n=1;
-        continue
-    elseif askRematch == 'N'
-        n=1;
-        quit
-    else 
-           promptRematchLoser = 'Please reply with Y or N  ' % If user inputs invalid answer
-           askRematch = input(promptRematchLoser, 's')
-    if askRematch == 'Y'
-        n=1;
-        disp('Great! Lets go again!')
-        continue
-    elseif askRematch == 'N'
-        n=1;
-                disp('Okay, come back soon! Goodbye!')
-        quit
-        
-    else disp('Alright, I am just going to assume you do not want to play again. Have a nice day!')
-        quit
-    end
-    end
-    
-elseif winnerResultIndicator == 0
-    n=n;
-else
-draw = msgbox('It is a Draw!');
-    askRematch = input(promptRematchDraw, 's')
-        askRematch = input(promptRematchDraw, 's')
-    if askRematch == 'Y'
-        n=1;
-        continue
-    elseif askRematch == 'N'
-        n=1;
-        break
-        
-    else 
-           promptRematchDraw = 'Please reply with Y or N  ' % If user inputs invalid answer
-           askRematch = input(promptRematchDraw, 's')
-           
-    if askRematch == 'Y'
-        n=1;
-        disp('Great! Lets go again!')
-        continue
-        
-    elseif askRematch == 'N'
-        n=1;
-        disp('Okay, come back soon! Goodbye!')
-        break
-        
-    else disp('Alright, I am just going to assume you do not want to play again. Have a nice day!')
-        break
-    end
-    end
-    
-    
-    end
-end
- 
-end
-
-
-%% User Goes Second %%
-% This section codes the scenario if the user decided to go second
-
-if k==2  % k is an indication of player turn number, 2 means player goes second
-    
-n=1;     % Counter indicating what turn number it is 
-
-
-for t = (n:10)                       % Limiting the game to 9 rounds
-
-if askRematch == 'Y' % If user has already played and wants to play again
-       
-    figure                      % Creating the figure where the game board will be generated
-    hold on                     % Allowing multiple lines to be plot
-    title('Tic-Tac-Toe');       % Creating a title for the figure
-    xlim([0 12]);               % Adjusting x-axis to span 0 to 12
-    ylim([0 12]);               % Adjusting y-axis to span 0 to 12
-   
-% Creating lines for the Game Board %
-    xline(4);                   % Creating a vertical line at x = 4
-    xline(8);                   % Creating a vertical line at x = 8
-    yline(4);                   % Creating a horizontal line at y = 4
-    yline(8);                   % Creating a horizontal line at y = 8
-
-% Redefining slot numerical indicators so the slots are known to be empty
-
-    slot1 = 0;
-    slot2 = 0;
-    slot3 = 0;
-    slot4 = 0;
-    slot5 = 0;
-    slot6 = 0;
-    slot7 = 0;
-    slot8 = 0;
-    slot9 = 0;
-
-% Readding text labels to each slot on the Tic-Tac-Toe board %
-
-    slotLabel1Text = text(1.5,10,slotLabel1,'FontSize', 60, 'Color', 'r');
-    slotLabel2Text = text(1.5,6,slotLabel2,'FontSize', 60, 'Color', 'r');
-    slotLabel3Text = text(1.5,2,slotLabel3,'FontSize', 60, 'Color', 'r');
-    slotLabel4Text = text(5.5,10,slotLabel4,'FontSize', 60, 'Color', 'r');
-    slotLabel5Text = text(5.5,6,slotLabel5,'FontSize', 60, 'Color', 'r');
-    slotLabel6Text = text(5.5,2,slotLabel6,'FontSize', 60, 'Color', 'r');
-    slotLabel7Text = text(9.5,10,slotLabel7,'FontSize', 60, 'Color', 'r');
-    slotLabel8Text = text(9.5,6,slotLabel8,'FontSize', 60, 'Color', 'r');
-    slotLabel9Text = text(9.5,2,slotLabel9,'FontSize', 60, 'Color', 'r');
-
-    pause(1)        % Pause for 1 second
-
-    % Defining Variables to determine who wins
-
-    % User Score Variables %
-    userScoreColumn1 = 0;       % Column 1 doesn't have user markers
-    userScoreColumn2 = 0;       % Column 2 doesn't have user markers
-    userScoreColumn3 = 0;       % Column 3 doesn't have user markers
-    userScoreRow1 = 0;          % Row 1 doesn't have user markers
-    userScoreRow2 = 0;          % Row 2 doesn't have user markers
-    userScoreRow3 = 0;          % Row 3 doesn't have user markers
-    userScoreDiagFromLeft = 0;  % Diagnoal Starting from the left doesn't have user markers
-    userScoreDiagFromRight = 0; % Diagnoal Starting from the right doesn't have user markers
-
-    % Computer Score Variables %
-    compScoreColumn1 = 0;       % Column 1 doesn't have computer markers
-    compScoreColumn2 = 0;       % Column 2 doesn't have computer markers
-    compScoreColumn3 = 0;       % Column 3 doesn't have computer markers
-    compScoreRow1 = 0;          % Row 1 doesn't have computer markers
-    compScoreRow2 = 0;          % Row 2 doesn't have computer markers
-    compScoreRow3 = 0;          % Row 3 doesn't have computer markers
-    compScoreDiagFromLeft = 0;  % Diagnoal Starting from the left doesn't have computer markers
-    compScoreDiagFromRight = 0; % Diagnoal Starting from the right doesn't have computer markers
-
-    % Numerical indicator for determining if someone has won
-    winnerResultIndicator = 0;  
-
-    % Defined message for prompting rematch
-    promptRematchWinner = 'Congratulations winner! Would you like to play again? Y/N     ';
-    promptRematchLoser = 'Hey, don''t give up! Would you like to play again? Y/N     ';
-    promptRematchDraw = 'Well that could have ended better! Would you like to play again? Y/N     ';
-    askRematch = 0;
-       else
-       end
-    
-% COMPUTER TURN 1 %
-
-while n == 1|3|5|7|9        
- 
-nx=0;               % Counter for ensuring that the computer does not place marker in an unwanted position 
-ny=0;               % Counter for ensuring that the computer does not place marker in an unwanted position 
-    
-while nx == 0       % Counter for ensuring that the computer does not place marker in an unwanted position
-    
-computerOutputx = randi([2 10],1);
-if computerOutputx == 1
-    nx = 0;
-elseif computerOutputx == 3
-    nx = 0;
-elseif computerOutputx == 4
-    nx = 0;
-elseif computerOutputx == 5
-    nx = 0;
-elseif computerOutputx == 7
-    nx = 0;
-elseif computerOutputx == 8
-    nx = 0;
-elseif computerOutputx == 9
-    nx = 0;
-elseif computerOutputx == 11
-    nx = 0;
-else
-    nx = 1;
-
-end
-end
-
-while ny == 0
-computerOutputy = randi([2 10],1);
-if computerOutputy == 1
-    ny = 0;
-elseif computerOutputy == 3
-    ny = 0;
-elseif computerOutputy == 4
-    ny = 0;
-elseif computerOutputy == 5
-    ny = 0;
-elseif computerOutputy == 7
-    ny = 0;
-elseif computerOutputy == 8
-    ny = 0;
-elseif computerOutputy == 9
-    ny = 0;
-elseif computerOutputy == 11
-    ny = 0;
-else
-    ny = 1;
-
-end
-end
-
-   ComputerInput1 = ([computerOutputx,computerOutputy]);
-   
-if ComputerInput1 == ([2,10])
-    if slot1 == 0
-        delete(slotLabel1Text)
-        plot(computerOutputx,computerOutputy,'bo', 'MarkerSize', 60)
-        slot1 = 1;
-        n=n+1;
-        compScoreColumn1 = compScoreColumn1 + 1;
-        compScoreRow1 = compScoreRow1 + 1;
-        compScoreDiagFromLeft = compScoreDiagFromLeft +1;
-        break
-        
-    else
-    end
-        
-elseif ComputerInput1 == ([2,6])
-    if slot2 == 0
-        delete(slotLabel2Text)
-        plot(computerOutputx,computerOutputy,'bo', 'MarkerSize', 60)
-        slot2 = 1;
-        n=n+1;
-        compScoreColumn1 = compScoreColumn1 + 1;
-        compScoreRow2 = compScoreRow2 + 1;
-        break
-    else
-    end
-        
-elseif ComputerInput1 == ([2,2])
-      if slot3 == 0
-        delete(slotLabel3Text)
-        plot(computerOutputx,computerOutputy,'bo', 'MarkerSize', 60)
-        slot3 = 1;
-        n=n+1;
-        compScoreColumn1 = compScoreColumn1 + 1;
-        compScoreRow3 = compScoreRow3 + 1;
-        compScoreDiagFromRight = compScoreDiagFromRight+1;
-        break
-        
-      else
-      end
-    
-elseif ComputerInput1 == ([6,10])
-   if slot4 == 0
-        delete(slotLabel4Text)
-        plot(computerOutputx,computerOutputy,'bo', 'MarkerSize', 60)
-        slot4 = 1;
-        n=n+1;
-        compScoreColumn2 = compScoreColumn2 +1;
-        compScoreRow1 = compScoreRow1 + 1;
-        break
-        
-   else
-   end
-    
-elseif ComputerInput1 == ([6,6])
-    if slot5 == 0
-        delete(slotLabel5Text)
-        plot(computerOutputx,computerOutputy,'bo', 'MarkerSize', 60)
-        slot5 = 1;
-        n=n+1;
-        compScoreColumn2 = compScoreColumn2 +1;
-        compScoreRow2 = compScoreRow2 + 1;
-        compScoreDiagFromLeft = compScoreDiagFromLeft +1;
-        compScoreDiagFromRight = compScoreDiagFromRight+1;
-        break
-        
-    else
-    end
-    
-elseif ComputerInput1 == ([6,2])
-    if slot6 == 0
-        delete(slotLabel6Text)
-        plot(computerOutputx,computerOutputy,'bo', 'MarkerSize', 60)
-        slot6 = 1;
-        n=n+1;
-        compScoreColumn2 = compScoreColumn2 +1;
-        compScoreRow3 = compScoreRow3 + 1;
-        break
-        
-    else
-    end
-
-elseif ComputerInput1 == ([10,10])
-   if slot7 == 0
-        delete(slotLabel7Text)
-        plot(computerOutputx,computerOutputy,'bo', 'MarkerSize', 60)
-        slot7 = 1;
-        n=n+1;
-        compScoreColumn3 = compScoreColumn3 +1;
-        compScoreRow1 = compScoreRow1 + 1;
-        compScoreDiagFromRight = compScoreDiagFromRight+1;
-        break
-        
-   else
-   end
-
-    
-elseif ComputerInput1 == ([10,6])
-   if slot8 == 0
-        delete(slotLabel8Text)
-        plot(computerOutputx,computerOutputy,'bo', 'MarkerSize', 60)
-        slot8 = 1;
-        n=n+1;
-        compScoreColumn3 = compScoreColumn3 +1;
-        compScoreRow2 = compScoreRow2 + 1;
-        break
-        
-   else 
-   end
-    
-elseif ComputerInput1 == ([10,2])
-    if slot9 == 0
-        delete(slotLabel9Text)
-        plot(computerOutputx,computerOutputy,'bo', 'MarkerSize', 60)
-        slot9 = 1;
-        n=n+1;
-        compScoreColumn3 = compScoreColumn3 +1;
-        compScoreRow3 = compScoreRow3 + 1;
-        break
-        
-    else
-        n;
-    end
-
-else
-    n
-
-end
-end 
-
- if     winnerResultIndicator ==0 
-if userScoreColumn1 == 3;
-    msgbox('You Win!');
-    winnerResultIndicator = 1;
-    close all
-    
-    
-elseif userScoreColumn2 == 3;
-    msgbox('You Win!');
-    winnerResultIndicator = 1;
-    close all
-     
-    
-    elseif userScoreColumn3 == 3;
-    msgbox('You Win!');
-    winnerResultIndicator = 1;
-    close all
-    
-    
-    elseif userScoreRow1 == 3;
-    msgbox('You Win!');
-    winnerResultIndicator = 1;
-    close all
-    
-    
-    elseif userScoreRow2 == 3;
-    msgbox('You Win!');
-    winnerResultIndicator = 1;
-    close all
-    
-    
-    elseif userScoreRow3 == 3;
-    msgbox('You Win!'); 
-    winnerResultIndicator = 1;
-    close all
-    
-    
-    elseif userScoreDiagFromLeft == 3;
-    msgbox('You Win!');
-    winnerResultIndicator = 1;
-    close all
-    
-    
-    elseif userScoreDiagFromRight == 3;
-    msgbox('You Win!');
-    winnerResultIndicator = 1;
-    close all
-    
-    
-elseif compScoreColumn1 == 3;
-    msgbox('You Lose!');
-    winnerResultIndicator = 2;
-    close all
-    
-    
-elseif compScoreColumn2 == 3;
-    msgbox('You Lose!');
-    winnerResultIndicator = 2;
-    close all
-    
-    
-elseif compScoreColumn3 == 3;
-    msgbox('You Lose!');
-    winnerResultIndicator = 2;
-    close all
-    
-    
-elseif compScoreRow1 == 3;
-    msgbox('You Lose!');
-    winnerResultIndicator = 2;
-    close all
-    
-    
-elseif compScoreRow2 == 3;
-    msgbox('You Lose!');
-    winnerResultIndicator = 2;
-    close all
-    
-    
-elseif compScoreRow3 == 3;
-    msgbox('You Lose!');
-    winnerResultIndicator = 2;
-    close all  
-    
-    
-elseif compScoreDiagFromLeft == 3;
-    msgbox('You Lose!');
-    winnerResultIndicator = 2;
-    close all
-    
-    
-elseif compScoreDiagFromRight == 3;
-    msgbox('You Lose!');
-    winnerResultIndicator = 2;
-    close all
-    
-    
-else
-end
-
- end
-
-if winnerResultIndicator == 1;
-    askRematch = input(promptRematchWinner, 's')
-    if askRematch == 'Y'
-        n=1;
-    elseif askRematch == 'N'
-        n=1;
-    else 
-           promptRematchWinner = 'Please reply with Y or N  ' % If user inputs invalid answer
-           askRematch = input(promptRematchWinner, 's')
-    if askRematch == 'Y'
-        n=1;
-        disp('Great! Lets go again!')
-    elseif askRematch == 'N'
-        n=1;
-        disp('Okay, come back soon! Goodbye!')
-        break
-        
-    else disp('Alright, I am just going to assume you do not want to play again. Have a nice day!')
-        break
-    end
-    end
-
-    
-elseif winnerResultIndicator == 2;
-    askRematch = input(promptRematchLoser, 's')
-        askRematch = input(promptRematchLoser, 's')
-    if askRematch == 'Y'
-        n=1;
-    elseif askRematch == 'N'
-        n=1;
-    else 
-           promptRematchLoser = 'Please reply with Y or N  ' % If user inputs invalid answer
-           askRematch = input(promptRematchLoser, 's')
-    if askRematch == 'Y'
-        n=1;
-        disp('Great! Lets go again!')
-    elseif askRematch == 'N'
-        n=1;
-        disp('Okay, come back soon! Goodbye!')
-        break
-        
-    else disp('Alright, I am just going to assume you do not want to play again. Have a nice day!')
-        break
-    end
-    end
-    
-elseif winnerResultIndicator == 0
-    n=n;
-else
-draw = msgbox('It is a Draw!');
-    askRematch = input(promptRematchDraw, 's')
-        askRematch = input(promptRematchDraw, 's')
-    if askRematch == 'Y'
-        n=1;
-    elseif askRematch == 'N'
-        n=1;
-    else 
-           promptRematchDraw = 'Please reply with Y or N  ' % If user inputs invalid answer
-           askRematch = input(promptRematchDraw, 's')
-    if askRematch == 'Y'
-        n=1;
-        disp('Great! Lets go again!')
-    elseif askRematch == 'N'
-        n=1;
-        disp('Okay, come back soon! Goodbye!')
-        break
-        
-    else disp('Alright, I am just going to assume you do not want to play again. Have a nice day!')
-        break
-    end
-    end
-    
-    
-    end
-  
-% PLAYER TURN %
-
-while n == 2|4|6|8;
-disp('Your Turn!')
-    userInput1 = input('What is the number of the box you wish to select?   ');
-    if userInput1 == 1
-        if slot1 == 0
-        delete(slotLabel1Text)
-        plot(2,10,'rX', 'MarkerSize', 60)
-        slot1 = 'Filled';
-        n=n+1;
-        userScoreColumn1 = userScoreColumn1 + 1;
-        userScoreRow1 = userScoreRow1 + 1;
-        userScoreDiagFromLeft = userScoreDiagFromLeft +1;
-        break
-
-        else
-        end
-        
-    elseif userInput1 == 'One'
-        if slot1 == 0
-        delete(slotLabel1Text)
-        plot(2,10,'rX', 'MarkerSize', 60)
-        slot1 = 'Filled';
-        n=n+1;
-        userScoreColumn1 = userScoreColumn1 + 1;
-        userScoreRow1 = userScoreRow1 + 1;
-        userScoreDiagFromLeft = userScoreDiagFromLeft +1;
-        break
-        
-        else
-        end
-        
-    elseif userInput1 == 'one'
-        if slot1 == 0
-        delete(slotLabel1Text)
-        plot(2,10,'rX', 'MarkerSize', 60)
-        slot1 = 'Filled';
-        n=n+1;
-        userScoreColumn1 = userScoreColumn1 + 1;
-        userScoreRow1 = userScoreRow1 + 1;
-        userScoreDiagFromLeft = userScoreDiagFromLeft +1;
-        break
-        
-        else
-        end
-        
-     elseif userInput1 == 2
-         if slot2 == 0
-        delete(slotLabel2Text)
-        plot(2,6,'rX', 'MarkerSize', 60)
-        slot2 = 'Filled';
-        n=n+1;
-        userScoreColumn1 = userScoreColumn1 + 1;
-        userScoreRow2 = userScoreRow2 + 1;
-        break
-        
-         else
-         end
-        
-    elseif userInput1 == 'Two'
-        if slot2 == 0
-        delete(slotLabel2Text)
-        plot(2,6,'rX', 'MarkerSize', 60)
-        slot2 = 'Filled';
-        n=n+1;
-        userScoreColumn1 = userScoreColumn1 + 1;
-        userScoreRow2 = userScoreRow2 + 1;
-        break
-        
-        else 
-        end
-        
-    elseif userInput1 == 'two'
-        if slot2 == 0
-        delete(slotLabel2Text)
-        plot(2,6,'rX', 'MarkerSize', 60)
-        slot2 = 'Filled';
-        n=n+1;
-        userScoreColumn1 = userScoreColumn1 + 1;
-        userScoreRow2 = userScoreRow2 + 1;
-        break
-        
-        else
-        end
-        
-    elseif userInput1 == 3
-        if slot3 == 0
-        delete(slotLabel3Text)
-        plot(2,2,'rX', 'MarkerSize', 60)
-        slot3 = 'Filled';
-        n=n+1;
-        userScoreColumn1 = userScoreColumn1 + 1;
-        userScoreRow3 = userScoreRow3 + 1;
-        userScoreDiagFromRight = userScoreDiagFromRight+1;
-        break
-        
-        else
-        end
-        
-    elseif userInput1 == 'Three'
-        if slot3 == 0
-        delete(slotLabel3Text)
-        plot(2,2,'rX', 'MarkerSize', 60)
-        slot3 = 'Filled';
-        n=n+1;        
-        userScoreColumn1 = userScoreColumn1 + 1;
-        userScoreRow3 = userScoreRow3 + 1;
-        userScoreDiagFromRight = userScoreDiagFromRight+1;
-        break
-        
-        else
-        end
-        
-    elseif userInput1 == 'three'
-        if slot3 == 0
-        delete(slotLabel3Text)
-        plot(2,2,'rX', 'MarkerSize', 60)
-        slot3 = 'Filled';
-        n=n+1;        
-        userScoreColumn1 = userScoreColumn1 + 1;
-        userScoreRow3 = userScoreRow3 + 1;
-        userScoreDiagFromRight = userScoreDiagFromRight+1;
-        break
-        
-        else
-        end
-        
-    elseif userInput1 == 4
-        if slot4 == 0
-        delete(slotLabel4Text)
-        plot(6,10,'rX', 'MarkerSize', 60)
-        slot4 = 'Filled';
-        n=n+1;
-        userScoreColumn2 = userScoreColumn2 +1;
-        userScoreRow1 = userScoreRow1 + 1;
-        break
-        
-        else
-        end
-        
-    elseif userInput1 == 'Four'
-        if slot4 == 0
-        delete(slotLabel4Text)
-        plot(6,10,'rX', 'MarkerSize', 60)
-        slot4 = 'Filled';
-        n=n+1;
-        userScoreColumn2 = userScoreColumn2 +1;
-        userScoreRow1 = userScoreRow1 + 1;
-        break
-        
-        else
-        end
-        
-    elseif userInput1 == 'four'
-        if slot4 == 0
-        delete(slotLabel4Text)
-        plot(6,10,'rX', 'MarkerSize', 60)
-        slot4 = 'Filled';
-        n=n+1;
-        userScoreColumn2 = userScoreColumn2 +1;
-        userScoreRow1 = userScoreRow1 + 1;
-        break
-        
-        else
-        end
-        
-    elseif userInput1 == 5
-        if slot5 == 0
-        delete(slotLabel5Text)
-        plot(6,6,'rX', 'MarkerSize', 60)
-        slot5 = 'Filled';
-        n=n+1;
-        userScoreColumn2 = userScoreColumn2 +1;
-        userScoreRow2 = userScoreRow2 + 1;
-        userScoreDiagFromLeft = userScoreDiagFromLeft +1;
-        userScoreDiagFromRight = userScoreDiagFromRight+1;
-        break
-        
-        else
-        end
-        
-    elseif userInput1 == 'Five'
-        if slot5 == 0
-        delete(slotLabel5Text)
-        plot(6,6,'rX', 'MarkerSize', 60)
-        slot5 = 'Filled';
-        n=n+1;        
-        userScoreColumn2 = userScoreColumn2 +1;
-        userScoreRow2 = userScoreRow2 + 1;
-        userScoreDiagFromLeft = userScoreDiagFromLeft +1;
-        userScoreDiagFromRight = userScoreDiagFromRight+1;
-        break
-        
-        else
-        end
-        
-    elseif userInput1 == 'five'
-        if slot5 == 0
-        delete(slotLabel5Text)
-        plot(6,6,'rX', 'MarkerSize', 60)
-        slot5 = 'Filled';
-        n=n+1;        
-        userScoreColumn2 = userScoreColumn2 +1;
-        userScoreRow2 = userScoreRow2 + 1;
-        userScoreDiagFromLeft = userScoreDiagFromLeft +1;
-        userScoreDiagFromRight = userScoreDiagFromRight+1;
-        break
-        
-        else
-        end
-        
-    elseif userInput1 == 6
-        if slot6 == 0
-        delete(slotLabel6Text)
-        plot(6,2,'rX', 'MarkerSize', 60)
-        slot6 = 'Filled';
-        n=n+1;        
-        userScoreColumn2 = userScoreColumn2 +1;
-        userScoreRow3 = userScoreRow3 + 1;
-        break
-        
-        else
-        end
-        
-    elseif userInput1 == 'Six'
-        if slot6 == 0
-        delete(slotLabel6Text)
-        plot(6,2,'rX', 'MarkerSize', 60)
-        slot6 = 'Filled';
-        n=n+1;        
-        userScoreColumn2 = userScoreColumn2 +1;
-        userScoreRow3 = userScoreRow3 + 1;
-        break
-        
-        else
-        end
-        
-    elseif userInput1 == 'six'
-        if slot6 == 0
-        delete(slotLabel6Text)
-        plot(6,2,'rX', 'MarkerSize', 60)
-        slot6 = 'Filled';
-        n=n+1;        
-        userScoreColumn2 = userScoreColumn2 +1;
-        userScoreRow3 = userScoreRow3 + 1;
-        break
-        
-        else
-        end
-        
-    elseif userInput1 == 7
-        if slot7 == 0
-        delete(slotLabel7Text)
-        plot(10,10,'rX', 'MarkerSize', 60)
-        slot7 = 'Filled';
-        n=n+1;
-        userScoreColumn3 = userScoreColumn3 +1;
-        userScoreRow1 = userScoreRow1 + 1;
-        userScoreDiagFromRight = userScoreDiagFromRight+1;
-        break
-        
-        else
-        end
-        
-    elseif userInput1 == 'Seven'
-        if slot7 == 0
-        delete(slotLabel7Text)
-        plot(10,10,'rX', 'MarkerSize', 60)
-        slot7 = 'Filled';
-        n=n+1;
-        userScoreColumn3 = userScoreColumn3 +1;
-        userScoreRow1 = userScoreRow1 + 1;
-        userScoreDiagFromRight = userScoreDiagFromRight+1;
-        break
-        
-        else
-        end
-        
-    elseif userInput1 == 'seven'
-        if slot7 == 0
-        delete(slotLabel7Text)
-        plot(10,10,'rX', 'MarkerSize', 60)
-        slot7 = 'Filled';
-        n=n+1;
-        userScoreColumn3 = userScoreColumn3 +1;
-        userScoreRow1 = userScoreRow1 + 1;
-        userScoreDiagFromRight = userScoreDiagFromRight+1;
-        break
-        
-        else
-        end
-        
-    elseif userInput1 == 8
-        if slot8 == 0
-        delete(slotLabel8Text)
-        plot(10,6,'rX', 'MarkerSize', 60)
-        slot8 = 'Filled';
-        n=n+1;        
-        userScoreColumn3 = userScoreColumn3 +1;
-        userScoreRow2 = userScoreRow2 + 1;
-        break
-        
-        else
-        end
-        
-    elseif userInput1 == 'Eight'
-        if slot8 == 0
-        delete(slotLabel8Text)
-        plot(10,6,'rX', 'MarkerSize', 60)
-        slot8 = 'Filled';
-        n=n+1;        
-        userScoreColumn3 = userScoreColumn3 +1;
-        userScoreRow2 = userScoreRow2 + 1;
-        break
-        
-        else
-        end
-        
-    elseif userInput1 == 'eight'
-        if slot8 == 0
-        delete(slotLabel8Text)
-        plot(10,6,'rX', 'MarkerSize', 60)
-        slot8 = 'Filled';
-        n=n+1;        
-        userScoreColumn3 = userScoreColumn3 +1;
-        userScoreRow2 = userScoreRow2 + 1;
-        break
-        
-        else
-        end
-        
-    elseif userInput1 == 9
-        if slot9 == 0
-        delete(slotLabel9Text)
-        plot(10,2,'rX', 'MarkerSize', 60)
-        slot9 = 'Filled';
-        n=n+1;
-        userScoreColumn3 = userScoreColumn3 +1;
-        userScoreRow3 = userScoreRow3 + 1;
-        break
-        
-        else
-        end
-        
-    elseif userInput1 == 'Nine'
-        if slot9 == 0
-        delete(slotLabel9Text)
-        plot(10,2,'rX', 'MarkerSize', 60)
-        slot9 = 'Filled';
-        n=n+1;
-        userScoreColumn3 = userScoreColumn3 +1;
-        userScoreRow3 = userScoreRow3 + 1;
-        break
-        
-        else
-        end
-        
-    elseif userInput1 == 'nine'
-        if slot9 == 0
-        delete(slotLabel9Text)
-        plot(10,2,'rX', 'MarkerSize', 60)
-        slot9 = 'Filled';
-        n=n+1;
-        userScoreColumn3 = userScoreColumn3 +1;
-        userScoreRow3 = userScoreRow3 + 1;
-        break
-        
-        else
-        end
-    
-    end
-
-
-% Determining if there is a winner %
-
- if     winnerResultIndicator ==0 
-if userScoreColumn1 == 3;
-    msgbox('You Win!')
-    winnerResultIndicator = 1;
-    
-    
-    
-elseif userScoreColumn2 == 3;
-    msgbox('You Win!')
-    winnerResultIndicator = 1;
-    
-    
-    
-    elseif userScoreColumn3 == 3;
-    msgbox('You Win')
-    winnerResultIndicator = 1;
-    
-    
-    
-    elseif userScoreRow1 == 3;
-    msgbox('You Win!')
-    winnerResultIndicator = 1;
-    
-   
-    
-    elseif userScoreRow2 == 3;
-    msgbox('You Win!')
-    winnerResultIndicator = 1;
-    
-    
-    
-    elseif userScoreRow3 == 3;
-    msgbox('You Win!')  
-    winnerResultIndicator = 1;
-    
-    
-    
-    elseif userScoreDiagFromLeft == 3;
-    msgbox('You Win!')
-    winnerResultIndicator = 1;
-    
-    
-    
-    elseif userScoreDiagFromRight == 3;
-    msgbox('You Win!')
-    winnerResultIndicator = 1;
-    
-   
-    
-elseif compScoreColumn1 == 3;
-    msgbox('You Lose!')
-    winnerResultIndicator = 2;
-    
-   
-    
-elseif compScoreColumn2 == 3;
-    msgbox('You Lose!')
-    winnerResultIndicator = 2;
-    
-    
-    
-elseif compScoreColumn3 == 3;
-    msgbox('You Lose!')
-    winnerResultIndicator = 2;
-    
-    
-    
-elseif compScoreRow1 == 3;
-    msgbox('You Lose!')
-    winnerResultIndicator = 2;
-    
-    
-    
-elseif compScoreRow2 == 3;
-    msgbox('You Lose!')
-    winnerResultIndicator = 2;
-    
-    
-    
-elseif compScoreRow3 == 3;
-    msgbox('You Lose!')
-    winnerResultIndicator = 2;
-      
-    
-    
-elseif compScoreDiagFromLeft == 3;
-    msgbox('You Lose!')
-    winnerResultIndicator = 2;
-    
-    
-    
-elseif compScoreDiagFromRight == 3;
-    msgbox('You Lose!')
-    winnerResultIndicator = 2;
-    
-    
-    
-else
-end
-
- end
- 
-
-
-    
-    
-end
-
-if winnerResultIndicator == 1;
-    askRematch = input(promptRematch, 's')
-    if askRematch == 'Y'
-        n=1;
-    elseif askRematch == 'N'
-        n=1;
-    else 
-           promptRematch = 'Please reply with Y or N  ' % If user inputs invalid answer
-           askRematch = input(promptRematch, 's')
-    if askRematch == 'Y'
-        n=1;
-        disp('Great! Lets go again!')
-    elseif askRematch == 'N'
-        n=1;
-        disp('Okay, come back soon! Goodbye!')
-        quit
-        
-    else disp('Alright, I am just going to assume you do not want to play again. Have a nice day!')
-        quit
-    end
-    end
-
-    
-elseif winnerResultIndicator == 2;
-    askRematch = input(promptRematch, 's')
-        askRematch = input(promptRematch, 's')
-    if askRematch == 'Y'
-        n=1;
-    elseif askRematch == 'N'
-        n=1;
-    else 
-           promptRematch = 'Please reply with Y or N  ' % If user inputs invalid answer
-           askRematch = input(promptRematch, 's')
-    if askRematch == 'Y'
-        n=1;
-        disp('Great! Lets go again!')
-    elseif askRematch == 'N'
-        n=1;
-        disp('Okay, come back soon! Goodbye!')
-        break
-        
-    else disp('Alright, I am just going to assume you do not want to play again. Have a nice day!')
-        break
-    end
-    end
-    
-elseif winnerResultIndicator == 0
-    n=n;
-else
-draw = msgbox('It is a Draw!');
-    askRematch = input(promptRematch, 's')
-        askRematch = input(promptRematch, 's')
-    if askRematch == 'Y'
-        n=1;
-    elseif askRematch == 'N'
-        n=1;
-    else 
-           promptRematch = 'Please reply with Y or N  ' % If user inputs invalid answer
-           askRematch = input(promptRematch, 's')
-    if askRematch == 'Y'
-        n=1;
-        disp('Great! Lets go again!')
-    elseif askRematch == 'N'
-        n=1;
-        disp('Okay, come back soon! Goodbye!')
-        break
-        
-    else disp('Alright, I am just going to assume you do not want to play again. Have a nice day!')
-        break
-    end
-
-end
- 
- 
-end
-
-end
-end
