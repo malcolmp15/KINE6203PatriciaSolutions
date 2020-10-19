@@ -3,8 +3,8 @@
 % Written by: Patricia M. Butler
 % Date: 10-22-2020
 
-% Description: This code was written to generate a tic-tac-toe game that the user can
-% play against an AI.
+% Description: This code was written to generate a tic-tac-toe game. The
+% user will play against a computer with randomly generated moves.
 
 % Developed on Matlab version R2019b, Update 3, with Windows 10 Version
 
@@ -24,12 +24,12 @@ replayPrompt = 0;   % Variable used to ensure a player will input a valid answer
 
 % Numerical indicator for identifying if a player wishes to play Tic-Tac-Toe
 i = 0;                        % 1 means user wants to play
-% 2 means user does not want to play
+                              % 2 means user does not want to play
 
 % While player has not chosen whether they wanted to play or not
 while i == 0
     
-    promptPlay = 'Would you like to play Tic-Tac-Toe? (Y/N)  ' % Asking user if they want to play
+    promptPlay = 'Welcome, thank you for opening up my code! Would you like to play Tic-Tac-Toe? (Y/N)  '; % Asking user if they want to play
     userInput = input(promptPlay,'s')                          % User response
     
     if userInput == 'Y'           % If User indicates that they would like to play
@@ -53,8 +53,12 @@ pause(1.5)                                                 % Brief Pause
 clc                                                        % Clear command window
 
 %% The Game
+% This section includes the code to generate the game board, prompting user
+% for moves, randomly deciding the computer's moves, determining the winner,
+% prompting the user if they would like to replay, and restarting the game.
 
-while replayAnswer ~= 'N'       % While user has not said they would not like to replay
+
+while replayAnswer ~= 'N'|'n'       % While user has not said they would not like to replay
     
     clear all                   % Clear all saved variables and values in Workspace
     close all                   % Close any open figures
@@ -1318,13 +1322,24 @@ while replayAnswer ~= 'N'       % While user has not said they would not like to
             pause(0.5)
             turn = 1;                   % Resetting turn number
             userWins = '?';             % Resetting win indicator
-            %answer = 1;
             replayPrompt = 1;           % Ending loop asking if the user would like to replay
         elseif replayAnswer == 'N'      % If user does not want to replay
-            disp('Okay, come back soon!')
-            replayPrompt = 1;
-            pause(1)
-            quit                        % Quitting MATLAB
+            if userWins == 'Y'          % If user won but does not want to play again
+                disp('Congrats on winning! I hope you had fun, please play again in the future!')
+                replayPrompt = 1;
+                pause(1)
+                quit                    % Quitting MATLAB
+            elseif userWins =='N'       % If user lost and does not want to play again
+                disp('I''m sorry you didn''t win. I hope you had fun, please play again in the future!')
+                replayPrompt = 1;
+                pause(1)
+                quit                    % Quitting MATLAB
+            else                        % If user did not win or lose and does not want to play again
+                disp('You didn''t win or lose! I hope you had fun, please play again in the future!')
+                replayPrompt = 1;
+                pause(1)
+                quit                    % Quitting MATLAB
+            end
         else                            % If user input invalid answer
             replayAnswer = input('Please input a Y or N. Would you like to play again?   ', 's') % Reminding user to input a valid answer
             
