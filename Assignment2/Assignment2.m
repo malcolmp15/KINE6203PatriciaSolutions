@@ -24,20 +24,20 @@ replayPrompt = 0;   % Variable used to ensure a player will input a valid answer
 
 % Numerical indicator for identifying if a player wishes to play Tic-Tac-Toe
 i = 0;                        % 1 means user wants to play
-                              % 2 means user does not want to play
+% 2 means user does not want to play
 
 % While player has not chosen whether they wanted to play or not
 while i == 0
     
     promptPlay = 'Welcome, thank you for opening up my code! Would you like to play Tic-Tac-Toe? (Y/N)  '; % Asking user if they want to play
-    userInput = input(promptPlay,'s')                          % User response
+    userInput = upper(input(promptPlay,'s'))                          % User response
     
     if userInput == 'Y'           % If User indicates that they would like to play
-        i = 1
+        i = 1;
         promptResponse = 'Great! Lets get started!  '          % Response to user wanting to play
         
     elseif userInput == 'N'       % If User indicates that they would not like to play
-        i =2
+        i = 2;
         promptResponse = 'Get outta here!'                     % Response to user not wanting to play
         pause(.75)                                             % Brief pause
         quit                      % Closing Application
@@ -58,7 +58,7 @@ clc                                                        % Clear command windo
 % prompting the user if they would like to replay, and restarting the game.
 
 
-while replayAnswer ~= 'N'|'n'       % While user has not said they would not like to replay
+while replayAnswer ~= 'N'       % While user has not said they would not like to replay
     
     clear all                   % Clear all saved variables and values in Workspace
     close all                   % Close any open figures
@@ -156,6 +156,7 @@ while replayAnswer ~= 'N'|'n'       % While user has not said they would not lik
                             userDiagFromLeft(1) = 1;            % User has marked the first spot in Left Diagonal
                             turn = turn + 1;                    % It is the next turn
                         else
+                            disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
                         
@@ -168,6 +169,7 @@ while replayAnswer ~= 'N'|'n'       % While user has not said they would not lik
                             userColumn1(2) = 1;                 % User has marked the second spot in Column 1
                             turn = turn + 1;                    % It is the next turn
                         else
+                            disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
                     elseif userInput == 3                       % If user inputs 3
@@ -180,6 +182,7 @@ while replayAnswer ~= 'N'|'n'       % While user has not said they would not lik
                             userDiagFromRight(1) = 1;           % User has marked the first spot in the Right Diagonal
                             turn = turn + 1;                    % It is the next turn
                         else
+                            disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
                     elseif userInput == 4                       % If user inputs 4
@@ -191,6 +194,7 @@ while replayAnswer ~= 'N'|'n'       % While user has not said they would not lik
                             userColumn2(1) = 1;                 % User has marked the first spot in Column 1
                             turn = turn + 1;                    % It is the next turn
                         else
+                            disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
                     elseif userInput == 5                       % If user inputs 5
@@ -204,6 +208,7 @@ while replayAnswer ~= 'N'|'n'       % While user has not said they would not lik
                             userDiagFromRight(2) = 1;           % User has marked the second spot in the Right Diagonal
                             turn = turn + 1;                    % It is the next turn
                         else
+                            disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
                     elseif userInput == 6                       % If user inputs 6
@@ -215,6 +220,7 @@ while replayAnswer ~= 'N'|'n'       % While user has not said they would not lik
                             userColumn2(3) = 1;                 % User has marked the third spot in Column 2
                             turn = turn + 1;                    % It is the next turn
                         else
+                            disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
                     elseif userInput == 7                       % If user inputs 7
@@ -227,6 +233,7 @@ while replayAnswer ~= 'N'|'n'       % While user has not said they would not lik
                             userDiagFromRight(3) = 1;           % User has marked the third spot in the Right Diagonal
                             turn = turn + 1;                    % It is the next turn
                         else
+                            disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
                     elseif userInput == 8                       % If user inputs 8
@@ -238,6 +245,7 @@ while replayAnswer ~= 'N'|'n'       % While user has not said they would not lik
                             userColumn3(2) = 1;                 % User has marked the second spot in Column 3
                             turn = turn + 1;                    % It is the next turn
                         else
+                            disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
                     elseif userInput == 9                       % If user inputs 9
@@ -250,6 +258,7 @@ while replayAnswer ~= 'N'|'n'       % While user has not said they would not lik
                             userDiagFromLeft(3) = 1;            % User has marked the third spot in the Right Diagonal
                             turn = turn + 1;                    % It is the next turn
                         else
+                            disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
                     else userInput = input('Please input a number (ex: 1,2,3, ...)   '); % Reminidng user to input valid number
@@ -367,6 +376,7 @@ while replayAnswer ~= 'N'|'n'       % While user has not said they would not lik
                             userDiagFromLeft(1) = 1;            % User has marked the first spot in Left Diagonal
                             turn = turn + 1;                    % It is the next turn
                         else
+                            disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
                         
@@ -379,6 +389,7 @@ while replayAnswer ~= 'N'|'n'       % While user has not said they would not lik
                             userColumn1(2) = 1;                 % User has marked the second spot in Column 1
                             turn = turn + 1;                    % It is the next turn
                         else
+                            disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
                     elseif userInput == 3                       % If user inputs 3
@@ -391,6 +402,7 @@ while replayAnswer ~= 'N'|'n'       % While user has not said they would not lik
                             userDiagFromRight(1) = 1;           % User has marked the first spot in the Right Diagonal
                             turn = turn + 1;                    % It is the next turn
                         else
+                            disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
                     elseif userInput == 4                       % If user inputs 4
@@ -402,6 +414,7 @@ while replayAnswer ~= 'N'|'n'       % While user has not said they would not lik
                             userColumn2(1) = 1;                 % User has marked the first spot in Column 1
                             turn = turn + 1;                    % It is the next turn
                         else
+                            disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
                     elseif userInput == 5                       % If user inputs 5
@@ -415,6 +428,7 @@ while replayAnswer ~= 'N'|'n'       % While user has not said they would not lik
                             userDiagFromRight(2) = 1;           % User has marked the second spot in the Right Diagonal
                             turn = turn + 1;                    % It is the next turn
                         else
+                            disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
                     elseif userInput == 6                       % If user inputs 6
@@ -426,6 +440,7 @@ while replayAnswer ~= 'N'|'n'       % While user has not said they would not lik
                             userColumn2(3) = 1;                 % User has marked the third spot in Column 2
                             turn = turn + 1;                    % It is the next turn
                         else
+                            disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
                     elseif userInput == 7                       % If user inputs 7
@@ -438,6 +453,7 @@ while replayAnswer ~= 'N'|'n'       % While user has not said they would not lik
                             userDiagFromRight(3) = 1;           % User has marked the third spot in the Right Diagonal
                             turn = turn + 1;                    % It is the next turn
                         else
+                            disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
                     elseif userInput == 8                       % If user inputs 8
@@ -449,6 +465,7 @@ while replayAnswer ~= 'N'|'n'       % While user has not said they would not lik
                             userColumn3(2) = 1;                 % User has marked the second spot in Column 3
                             turn = turn + 1;                    % It is the next turn
                         else
+                            disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
                     elseif userInput == 9                       % If user inputs 9
@@ -461,6 +478,7 @@ while replayAnswer ~= 'N'|'n'       % While user has not said they would not lik
                             userDiagFromLeft(3) = 1;            % User has marked the third spot in the Right Diagonal
                             turn = turn + 1;                    % It is the next turn
                         else
+                            disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
                     else userInput = input('Please input a number (ex: 1,2,3, ...)   '); % Reminding user to input valid number
@@ -579,6 +597,7 @@ while replayAnswer ~= 'N'|'n'       % While user has not said they would not lik
                             userDiagFromLeft(1) = 1;            % User has marked the first spot in Left Diagonal
                             turn = turn + 1;                    % It is the next turn
                         else
+                            disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
                         
@@ -591,6 +610,7 @@ while replayAnswer ~= 'N'|'n'       % While user has not said they would not lik
                             userColumn1(2) = 1;                 % User has marked the second spot in Column 1
                             turn = turn + 1;                    % It is the next turn
                         else
+                            disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
                     elseif userInput == 3                       % If user inputs 3
@@ -603,6 +623,7 @@ while replayAnswer ~= 'N'|'n'       % While user has not said they would not lik
                             userDiagFromRight(1) = 1;           % User has marked the first spot in the Right Diagonal
                             turn = turn + 1;                    % It is the next turn
                         else
+                            disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
                     elseif userInput == 4                       % If user inputs 4
@@ -614,6 +635,7 @@ while replayAnswer ~= 'N'|'n'       % While user has not said they would not lik
                             userColumn2(1) = 1;                 % User has marked the first spot in Column 1
                             turn = turn + 1;                    % It is the next turn
                         else
+                            disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
                     elseif userInput == 5                       % If user inputs 5
@@ -627,6 +649,7 @@ while replayAnswer ~= 'N'|'n'       % While user has not said they would not lik
                             userDiagFromRight(2) = 1;           % User has marked the second spot in the Right Diagonal
                             turn = turn + 1;                    % It is the next turn
                         else
+                            disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
                     elseif userInput == 6                       % If user inputs 6
@@ -638,6 +661,7 @@ while replayAnswer ~= 'N'|'n'       % While user has not said they would not lik
                             userColumn2(3) = 1;                 % User has marked the third spot in Column 2
                             turn = turn + 1;                    % It is the next turn
                         else
+                            disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
                     elseif userInput == 7                       % If user inputs 7
@@ -650,6 +674,7 @@ while replayAnswer ~= 'N'|'n'       % While user has not said they would not lik
                             userDiagFromRight(3) = 1;           % User has marked the third spot in the Right Diagonal
                             turn = turn + 1;                    % It is the next turn
                         else
+                            disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
                     elseif userInput == 8                       % If user inputs 8
@@ -661,6 +686,7 @@ while replayAnswer ~= 'N'|'n'       % While user has not said they would not lik
                             userColumn3(2) = 1;                 % User has marked the second spot in Column 3
                             turn = turn + 1;                    % It is the next turn
                         else
+                            disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
                     elseif userInput == 9                       % If user inputs 9
@@ -673,6 +699,7 @@ while replayAnswer ~= 'N'|'n'       % While user has not said they would not lik
                             userDiagFromLeft(3) = 1;            % User has marked the third spot in the Right Diagonal
                             turn = turn + 1;                    % It is the next turn
                         else
+                            disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
                     else userInput = input('Please input a number (ex: 1,2,3, ...)   '); % Reminding user to input a valid number
@@ -839,6 +866,7 @@ while replayAnswer ~= 'N'|'n'       % While user has not said they would not lik
                             userDiagFromLeft(1) = 1;            % User has marked the first spot in Left Diagonal
                             turn = turn + 1;                    % It is the next turn
                         else
+                            disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
                         
@@ -851,6 +879,7 @@ while replayAnswer ~= 'N'|'n'       % While user has not said they would not lik
                             userColumn1(2) = 1;                 % User has marked the second spot in Column 1
                             turn = turn + 1;                    % It is the next turn
                         else
+                            disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
                     elseif userInput == 3                       % If user inputs 3
@@ -863,6 +892,7 @@ while replayAnswer ~= 'N'|'n'       % While user has not said they would not lik
                             userDiagFromRight(1) = 1;           % User has marked the first spot in the Right Diagonal
                             turn = turn + 1;                    % It is the next turn
                         else
+                            disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
                     elseif userInput == 4                       % If user inputs 4
@@ -874,6 +904,7 @@ while replayAnswer ~= 'N'|'n'       % While user has not said they would not lik
                             userColumn2(1) = 1;                 % User has marked the first spot in Column 1
                             turn = turn + 1;                    % It is the next turn
                         else
+                            disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
                     elseif userInput == 5                       % If user inputs 5
@@ -887,6 +918,7 @@ while replayAnswer ~= 'N'|'n'       % While user has not said they would not lik
                             userDiagFromRight(2) = 1;           % User has marked the second spot in the Right Diagonal
                             turn = turn + 1;                    % It is the next turn
                         else
+                            disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
                     elseif userInput == 6                       % If user inputs 6
@@ -898,6 +930,7 @@ while replayAnswer ~= 'N'|'n'       % While user has not said they would not lik
                             userColumn2(3) = 1;                 % User has marked the third spot in Column 2
                             turn = turn + 1;                    % It is the next turn
                         else
+                            disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
                     elseif userInput == 7                       % If user inputs 7
@@ -910,6 +943,7 @@ while replayAnswer ~= 'N'|'n'       % While user has not said they would not lik
                             userDiagFromRight(3) = 1;           % User has marked the third spot in the Right Diagonal
                             turn = turn + 1;                    % It is the next turn
                         else
+                            disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
                     elseif userInput == 8                       % If user inputs 8
@@ -921,6 +955,7 @@ while replayAnswer ~= 'N'|'n'       % While user has not said they would not lik
                             userColumn3(2) = 1;                 % User has marked the second spot in Column 3
                             turn = turn + 1;                    % It is the next turn
                         else
+                            disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
                     elseif userInput == 9                       % If user inputs 9
@@ -933,6 +968,7 @@ while replayAnswer ~= 'N'|'n'       % While user has not said they would not lik
                             userDiagFromLeft(3) = 1;            % User has marked the third spot in the Right Diagonal
                             turn = turn + 1;                    % It is the next turn
                         else
+                            disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
                     else userInput = input('Please pick a spot that has not been taken   ');
@@ -1096,6 +1132,7 @@ while replayAnswer ~= 'N'|'n'       % While user has not said they would not lik
                             userDiagFromLeft(1) = 1;            % User has marked the first spot in Left Diagonal
                             turn = turn + 1;                    % It is the next turn
                         else
+                            disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
                         
@@ -1108,6 +1145,7 @@ while replayAnswer ~= 'N'|'n'       % While user has not said they would not lik
                             userColumn1(2) = 1;                 % User has marked the second spot in Column 1
                             turn = turn + 1;                    % It is the next turn
                         else
+                            disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
                     elseif userInput == 3                       % If user inputs 3
@@ -1120,6 +1158,7 @@ while replayAnswer ~= 'N'|'n'       % While user has not said they would not lik
                             userDiagFromRight(1) = 1;           % User has marked the first spot in the Right Diagonal
                             turn = turn + 1;                    % It is the next turn
                         else
+                            disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
                     elseif userInput == 4                       % If user inputs 4
@@ -1131,6 +1170,7 @@ while replayAnswer ~= 'N'|'n'       % While user has not said they would not lik
                             userColumn2(1) = 1;                 % User has marked the first spot in Column 1
                             turn = turn + 1;                    % It is the next turn
                         else
+                            disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
                     elseif userInput == 5                       % If user inputs 5
@@ -1144,6 +1184,7 @@ while replayAnswer ~= 'N'|'n'       % While user has not said they would not lik
                             userDiagFromRight(2) = 1;           % User has marked the second spot in the Right Diagonal
                             turn = turn + 1;                    % It is the next turn
                         else
+                            disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
                     elseif userInput == 6                       % If user inputs 6
@@ -1155,6 +1196,7 @@ while replayAnswer ~= 'N'|'n'       % While user has not said they would not lik
                             userColumn2(3) = 1;                 % User has marked the third spot in Column 2
                             turn = turn + 1;                    % It is the next turn
                         else
+                            disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
                     elseif userInput == 7                       % If user inputs 7
@@ -1167,6 +1209,7 @@ while replayAnswer ~= 'N'|'n'       % While user has not said they would not lik
                             userDiagFromRight(3) = 1;           % User has marked the third spot in the Right Diagonal
                             turn = turn + 1;                    % It is the next turn
                         else
+                            disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
                     elseif userInput == 8                       % If user inputs 8
@@ -1178,6 +1221,7 @@ while replayAnswer ~= 'N'|'n'       % While user has not said they would not lik
                             userColumn3(2) = 1;                 % User has marked the second spot in Column 3
                             turn = turn + 1;                    % It is the next turn
                         else
+                            disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
                     elseif userInput == 9                       % If user inputs 9
@@ -1190,6 +1234,7 @@ while replayAnswer ~= 'N'|'n'       % While user has not said they would not lik
                             userDiagFromLeft(3) = 1;            % User has marked the third spot in the Right Diagonal
                             turn = turn + 1;                    % It is the next turn
                         else
+                            disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
                     else userInput = input('Please input a number (ex: 1,2,3, ...)   '); % Reminding user ot input a valid number
@@ -1316,7 +1361,7 @@ while replayAnswer ~= 'N'|'n'       % While user has not said they would not lik
     % Asking user if they would like to play again %
     
     while replayPrompt == 0             % While user has not answered if they would like to replay
-        replayAnswer = input('Would you like to play again?  Y/N ', 's')
+        replayAnswer = upper(input('Would you like to play again?  Y/N ', 's'))
         if replayAnswer == 'Y'          % If user wants to replay
             disp('Great! This time will be better than the last!')
             pause(0.5)
@@ -1347,4 +1392,3 @@ while replayAnswer ~= 'N'|'n'       % While user has not said they would not lik
         
     end
 end
-
