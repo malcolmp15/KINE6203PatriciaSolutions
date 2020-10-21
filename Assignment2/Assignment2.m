@@ -202,7 +202,7 @@ while replayAnswer ~= 'N'       % While user has not said they would not like to
                             delete(spotLabel5Text)              % Delete the label "5" on board
                             plot(6,6,'rX', 'MarkerSize', 60)    % Plot X at 5
                             spot5 = 1;                          % Spot 5 is now full
-                            userRow2(2) = 1                     % User has marked the second spot in Row 2
+                            userRow2(2) = 1;                     % User has marked the second spot in Row 2
                             userColumn2(2) = 1;                 % User has marked the second spot in Column 2
                             userDiagFromLeft(2) = 1;            % User has marked the second spot in the Left Diagonal
                             userDiagFromRight(2) = 1;           % User has marked the second spot in the Right Diagonal
@@ -261,7 +261,7 @@ while replayAnswer ~= 'N'       % While user has not said they would not like to
                             disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
-                    else userInput = input('Please input a number (ex: 1,2,3, ...)   '); % Reminidng user to input valid number
+                    else disp('Please input a number (ex: 1,2,3, ...)   ') % Reminidng user to input valid number
                     end
                 else
                     break                                       % If someone has won, exit loop
@@ -481,7 +481,7 @@ while replayAnswer ~= 'N'       % While user has not said they would not like to
                             disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
-                    else userInput = input('Please input a number (ex: 1,2,3, ...)   '); % Reminding user to input valid number
+                    else disp('Please input a number (ex: 1,2,3, ...)   ') % Reminding user to input valid number
                     end
                 else
                     break   % If someone has won, exit loop
@@ -702,7 +702,7 @@ while replayAnswer ~= 'N'       % While user has not said they would not like to
                             disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
-                    else userInput = input('Please input a number (ex: 1,2,3, ...)   '); % Reminding user to input a valid number
+                    else disp('Please input a number (ex: 1,2,3, ...)   ') % Reminding user to input a valid number
                     end
                 else
                     break           % If someone has won, end loop
@@ -971,7 +971,7 @@ while replayAnswer ~= 'N'       % While user has not said they would not like to
                             disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
-                    else userInput = input('Please pick a spot that has not been taken   ');
+                    else disp('Please pick a spot that has not been taken   ')
                     end
                 else
                     break       % If someone has won, end loop
@@ -1237,7 +1237,7 @@ while replayAnswer ~= 'N'       % While user has not said they would not like to
                             disp('Please input a number that has not been taken (format ex: 1,2,3, ...)   '); % Telling user to input number that has not been taken
                         end
                         
-                    else userInput = input('Please input a number (ex: 1,2,3, ...)   '); % Reminding user ot input a valid number
+                    else disp('Please input a number (ex: 1,2,3, ...)   ') % Reminding user ot input a valid number
                     end
                 else
                     break       % If someone has won, end loop
@@ -1386,7 +1386,7 @@ while replayAnswer ~= 'N'       % While user has not said they would not like to
                 quit                    % Quitting MATLAB
             end
         else                            % If user input invalid answer
-            replayAnswer = input('Please input a Y or N. Would you like to play again?   ', 's') % Reminding user to input a valid answer
+            disp('Please input a Y or N.') % Reminding user to input a valid answer
             
         end
         
