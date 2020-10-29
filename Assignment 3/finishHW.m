@@ -1,4 +1,4 @@
-function [endHW] = finishHW()
+function finishHW()
 % This function does not take any inputs but outputs "Thank goodness this
 % assignment is over"
 

@@ -1,5 +1,6 @@
 function doubleVecPlot(vector1,vector2)
 % This function takes two vectors and plots them onto a figure. 
+% This function also adds a title and axis labels to the figure. 
 
 
 figure % Generating a figure

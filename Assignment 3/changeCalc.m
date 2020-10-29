@@ -1,5 +1,5 @@
 function [changeSum] = changeCalc(quarters,dimes,nickels,pennies)
-% This function takes in 4 number inputs representing the number of quarters,
+% This function takes in four number inputs representing the number of quarters,
 % dimes, nickels, and pennies and outputs the total dollar amount
 
 % Calculating the respective values of the coins
