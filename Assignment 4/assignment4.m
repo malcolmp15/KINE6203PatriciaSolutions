@@ -17,7 +17,7 @@ clear all   % Clearing Workspace
 
 %% Analyzing Isokinetic Data
 % This section imports the cvs file 'isok_data_6803.csv' and determines the
-% isokinetic averages of males, females, individual males and individual
+% isometric averages of the males, the females, individual males, and individual
 % females. It also determines what subjects had higher isometric strength
 % values for day 2 compared to day 1 as well as day 3 to day 2.
 
@@ -53,9 +53,9 @@ normDay3mean = mean(normDay3)
 % creates a table. 
 
 % Establishing Length of Variables
-lengthGIM = length(maleGroupIsoMean);       % Length of both gender's group iso means
-lengthMIIM = length(maleIsoIndMeans);       % Length of male iso ind means
-lengthFIIM = length(femaleIsoIndMeans);     % Length of female iso ind means
+lengthGIM = length(maleGroupIsoMean);       % Length of both gender's group isometric means
+lengthMIIM = length(maleIsoIndMeans);       % Length of male isometric individual means
+lengthFIIM = length(femaleIsoIndMeans);     % Length of female isometric individual means
 lengthd1d2 = length(day1toDay2);            % Length of day1toDay2
 lengthd2d3 = length(day2toDay3);            % Length of day2toDay3
 lengthNormDayMean = length(normDay1mean);   % Length of norm day mean
@@ -64,9 +64,9 @@ lengthNormDayMean = length(normDay1mean);   % Length of norm day mean
 maxLength = max([lengthGIM lengthMIIM lengthFIIM lengthd1d2 lengthd2d3 lengthNormDayMean])
 
 % Making each variable the same length by adding 0 to the numerical values
-% and "NaN" to the scripts
+% and "NaN" to the strings
 
-% Changing length of maleGroupIsoMean and femlaeGroupIsoMean
+% Changing length of maleGroupIsoMean and femaleGroupIsoMean
 for n = (lengthGIM:(maxLength-1))
     maleGroupIsoMean(end+1) = 0;
     femaleGroupIsoMean(end+1) = 0;
@@ -104,7 +104,7 @@ end
 % Placing variables into table and establishing variable names
 resultsTableInitial = table(maleGroupIsoMean' , femaleGroupIsoMean' ,maleIsoIndMeans' ,femaleIsoIndMeans' ,day1toDay2' ,day2toDay3' ,normDay1mean', normDay2mean', normDay3mean', 'VariableNames',{'maleGroupIsoMean', 'femaleGroupIsoMean', 'maleIsoIndMeans' ,'femaleIsoIndMeans' ,'day1toDay2', 'day2toDay3', 'normDay1mean', 'normDay2mean', 'normDay3mean'})
 
-% standradizing 0's to Nan
+% standardizing 0's to NaN
 resultsTable = standardizeMissing(resultsTableInitial,0)
 
 %% Exporting Data to a csv file
