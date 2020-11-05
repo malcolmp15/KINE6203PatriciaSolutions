@@ -22,7 +22,7 @@ if secondInputDay(rowNumber) > firstInputDay(rowNumber) % If secondInputDay is l
         daytoDay = strcat(daytoDay);                    % Adding string values
     end
 else
-    rowNumber = rowNumber + 1;                          % If firstInputDay is larger than secondInputDay, then go to the next row
+    rowNumber = rowNumber + 1;                          % If firstInputDay is larger than secondInputDay,
 end
 end
 end

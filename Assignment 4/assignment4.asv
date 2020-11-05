@@ -25,7 +25,7 @@ clear all   % Clearing Workspace
 [SubjectID, Age, Gender, Weight, Day1, Day2, Day3] = importfile('isok_data_6803.csv');
 
 % Determining isokinetic mean data for individual males, indivdual females,
-% the male group, and the female group.
+% the male group, and the female group
 [maleIsoIndMeans, femaleIsoIndMeans, maleGroupIsoMean, femaleGroupIsoMean] = genderIsoCalc(Gender,Day1,Day2,Day3)
 
 % Determining what subjects had higher isometric strength values on day 2 when compared to day 1
@@ -49,8 +49,7 @@ normDay2mean = mean(normDay2)
 normDay3mean = mean(normDay3)
 
 %% Exporting results to csvfile named 'iso_results.csv' %%
-% This section prepares the variables to be put into a table and then
-% creates a table. 
+% This section prepares the variables to be put into a table.
 
 % Establishing Length of Variables
 lengthGIM = length(maleGroupIsoMean);       % Length of both gender's group iso means
@@ -66,45 +65,42 @@ maxLength = max([lengthGIM lengthMIIM lengthFIIM lengthd1d2 lengthd2d3 lengthNor
 % Making each variable the same length by adding 0 to the numerical values
 % and "NaN" to the scripts
 
-% Changing length of maleGroupIsoMean and femlaeGroupIsoMean
+% Changing length of male and female group iso mean variables
 for n = (lengthGIM:(maxLength-1))
     maleGroupIsoMean(end+1) = 0;
     femaleGroupIsoMean(end+1) = 0;
 end
 
-% Changing length of maleIsoIndMeans
+% Changing length of male individual iso mean variable
 for n = (lengthMIIM:(maxLength-1))
     maleIsoIndMeans(end+1) = 0;
     femaleIsoIndMeans(end+1)= 0;
 end
 
-% Changing length of femaleIsoIndMeans
+% Changing length of female individual iso mean variable
 for n = (lengthFIIM:(maxLength-1))
     femaleIsoIndMeans(end+1)= 0;
 end
 
-% Changing length of day1toDay2 
 for n = (lengthd1d2:(maxLength-1))
     day1toDay2(end+1)= 'NaN';
     
 end
 
-% Changing length of day2toDay3
 for n = (lengthd2d3:(maxLength-1))
     day2toDay3(end+1) = 'NaN';
 end
 
-% Changing length of normDay1mean, normDay2mean, and normDay3mean
 for n = (lengthNormDayMean:(maxLength-1))
     normDay1mean(end+1) = 0;
     normDay2mean(end+1) = 0;
     normDay3mean(end+1) = 0;
 end
 
-% Placing variables into table and establishing variable names
+% Putting variables into a table and establishing variable names
 resultsTableInitial = table(maleGroupIsoMean' , femaleGroupIsoMean' ,maleIsoIndMeans' ,femaleIsoIndMeans' ,day1toDay2' ,day2toDay3' ,normDay1mean', normDay2mean', normDay3mean', 'VariableNames',{'maleGroupIsoMean', 'femaleGroupIsoMean', 'maleIsoIndMeans' ,'femaleIsoIndMeans' ,'day1toDay2', 'day2toDay3', 'normDay1mean', 'normDay2mean', 'normDay3mean'})
 
-% standradizing 0's to Nan
+% Changing 0's to NaN
 resultsTable = standardizeMissing(resultsTableInitial,0)
 
 %% Exporting Data to a csv file
