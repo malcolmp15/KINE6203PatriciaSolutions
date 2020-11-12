@@ -149,7 +149,7 @@ secretNumber, numOfTries); % Found Bug 10:  It originally said "fprintf('\nCongr
                            % variable and the fprintf script mentioning the number of tries. 
                            % I corrected this error by including "numofTries"
                            % so that the fprintf would print the secret number and the number of attempts.
-
+     
 fprintf('Game Over. Thanks for playing the Guess That Number game.\n\n');
 
 end  % Found Bug 11: The conditional did not have an end statement. I found this bug when I noticed that
